@@ -30,7 +30,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(0,0,0,0.9);backdrop-fil
 .dot{width:5px;height:5px;border-radius:50%;background:#444}.dot.active{background:#00d4ff}
 .name{font-size:12.5px;font-weight:600;margin-top:10px;height:36px;overflow:hidden;color:#eee}
 .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.price{color:#00d4ff;font-weight:800;font-size:15px} .old{font-size:10px;color:#555;text-decoration:line-through;margin-left:4px}
+.price{color:#00d4ff;font-weight:800;font-size:15px}.old{font-size:10px;color:#555;text-decoration:line-through;margin-left:4px}
 .add-cart{width:32px;height:32px;background:#fff;color:#000;border:none;border-radius:50%;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center}
 #cartDrawer{position:fixed;top:0;right:-100%;width:100%;max-width:380px;height:100vh;background:#0a0a0a;border-left:1px solid #222;z-index:200;transition:.35s;padding:16px;overflow-y:auto}
 #cartDrawer.open{right:0}
@@ -53,10 +53,19 @@ header{position:sticky;top:0;z-index:100;background:rgba(0,0,0,0.9);backdrop-fil
 .g-thumb img.active{border-color:#00d4ff;opacity:1}
 .order-input{width:100%;padding:11px;margin:5px 0;border-radius:10px;border:1px solid #333;background:#000;color:white}
 .order-card{background:#111;border:1px solid #00d4ff;border-radius:14px;padding:12px;margin-bottom:10px;font-size:12px}
+#ringStop{display:none;position:fixed;top:90px;left:50%;transform:translateX(-50%);background:red;color:white;padding:14px 24px;border-radius:30px;z-index:999;font-weight:800;box-shadow:0 0 30px red;animation:shake 0.5s infinite}
+@keyframes shake{0%,100%{transform:translateX(-50%)}25%{transform:translateX(-48%)}75%{transform:translateX(-52%)}}
 .empty{text-align:center;padding:60px 20px;color:#444;grid-column:1/3}
 </style>
 </head>
 <body>
+
+<audio id="orderSound" loop preload="auto">
+  <source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg">
+  <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c8b9d2.mp3" type="audio/mpeg">
+</audio>
+<div id="ringStop" onclick="stopRing()">🔔 NEW ORDER AAYA! RING BAND KARO ✕</div>
+
 <div id="adminBar">🔓 ADMIN MODE - <span id="orderNotify"></span> <button onclick="showOrders()" style="background:#000;color:#00d4ff;border:none;padding:4px 10px;border-radius:10px;margin-left:8px">📦 Orders Dekho</button></div>
 <header><div class="logo" id="logoBtn">Gadget<span>Zone</span></div><div class="icon" onclick="openCart()">🛒<div class="badge" id="cartCount">0</div></div></header>
 <div class="search-wrap"><div class="search">🔍<input id="searchInput" placeholder="Search..." oninput="filterProducts()"></div></div>
@@ -97,15 +106,101 @@ async function loadProducts(){
   gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]'); if(gadgets.length==0){gadgets=[{name:"Ronnin R-690 Wireless EarBuds",price:"4999",cat:"Earbuds",imgs:["https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"]}];}
   render(); checkOrders();
 }
-async function checkOrders(){try{let res=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`); if(res.ok){let orders=await res.json(); if(admin){document.getElementById('orderNotify').innerText=orders.length>0?`🔔 ${orders.length} Orders!`:'';} if(orders.length>0 && localStorage.getItem('lastOrderCount')!=orders.length){ if(admin){ try{new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();}catch(e){} } localStorage.setItem('lastOrderCount',orders.length); } } }catch(e){}}
-setInterval(checkOrders,10000);
 
-document.getElementById('logoBtn').addEventListener('click',()=>{tap++; if(tap>=5){let p=prompt("Admin Password:"); if(p==="gadgets 0827"){admin=!admin; document.getElementById('adminBar').classList.toggle('show',admin); document.getElementById('fabBtn').classList.toggle('show',admin); if(admin) document.getElementById('addBox').classList.add('show'); else document.getElementById('addBox').classList.remove('show'); if(admin&&!localStorage.getItem('gh_token')){let t=prompt("GitHub Token dalo (ek bar):"); if(t) localStorage.setItem('gh_token',t.trim());} render(); checkOrders(); alert(admin?"✅ Admin ON - Orders dekh sakte ho":"🔒 Admin OFF");}else if(p!==null) alert("❌ Wrong"); tap=0;} setTimeout(()=>tap=0,3000);});
+async function checkOrders(){
+  try{
+    let res=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`);
+    if(res.ok){
+      let orders=await res.json();
+      if(admin){
+        document.getElementById('orderNotify').innerText=orders.length>0?`🔔 ${orders.length} Orders!`:'';
+      }
+      let last = localStorage.getItem('lastOrderCount')||0;
+      if(orders.length>0 && orders.length != last){
+        if(last!=0 && last < orders.length){ 
+          playRing();
+        }
+        localStorage.setItem('lastOrderCount',orders.length);
+      }
+    }
+  }catch(e){}
+}
+setInterval(checkOrders,5000);
+
+function playRing(){
+  let audio=document.getElementById('orderSound');
+  audio.volume=1.0;
+  audio.play().catch(()=>{});
+  document.getElementById('ringStop').style.display='block';
+  if(navigator.vibrate) navigator.vibrate([1000,300,1000,300,2000]);
+  if(Notification && Notification.permission=="granted"){
+    new Notification("🔔 NEW ORDER!",{body:"GadgetZone par naya order aaya! Jaldi dekho", requireInteraction:true});
+  }
+}
+function stopRing(){
+  let audio=document.getElementById('orderSound');
+  audio.pause(); audio.currentTime=0;
+  document.getElementById('ringStop').style.display='none';
+  if(navigator.vibrate) navigator.vibrate(0);
+}
+
+document.getElementById('logoBtn').addEventListener('click',()=>{
+  tap++; 
+  if(tap>=5){
+    let p=prompt("Admin Password:");
+    if(p==="gadgets 0827"){
+      admin=!admin;
+      document.getElementById('adminBar').classList.toggle('show',admin);
+      document.getElementById('fabBtn').classList.toggle('show',admin);
+      if(admin) document.getElementById('addBox').classList.add('show');
+      else document.getElementById('addBox').classList.remove('show');
+      if(admin){
+        if(!localStorage.getItem('gh_token')){let t=prompt("GitHub Token dalo (ek bar):"); if(t) localStorage.setItem('gh_token',t.trim());}
+        if(Notification) Notification.requestPermission();
+        // enable sound on click
+        let a=document.getElementById('orderSound'); a.play().then(()=>{a.pause();a.currentTime=0;}).catch(()=>{});
+      }
+      render(); checkOrders();
+      alert(admin?"✅ Admin ON - Ring ON hai":"🔒 Admin OFF");
+    }else if(p!==null) alert("❌ Wrong");
+    tap=0;
+  } setTimeout(()=>tap=0,3000);
+});
 function toggleAdd(){document.getElementById('addBox').classList.toggle('show');}
-document.getElementById('pFile').addEventListener('change', async e=>{let files=[...e.target.files].slice(0,6); imgDatas=[]; document.getElementById('pv').innerHTML="Loading..."; for(let f of files){if(f.size>800000) continue; let data=await new Promise(r=>{let fr=new FileReader(); fr.onload=ev=>r(ev.target.result); fr.readAsDataURL(f);}); imgDatas.push(data);} document.getElementById('pv').innerHTML=imgDatas.map(d=>`<img src="${d}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #00d4ff">`).join('')+`<br><span style="color:lime;font-size:10px">✅ ${imgDatas.length} Photos Ready</span>`;});
-async function saveProduct(){let n=document.getElementById('pName').value.trim(), pr=document.getElementById('pPrice').value.trim(), ct=document.getElementById('pCat').value.trim()||'Earbuds'; if(!n||!pr){document.getElementById('msg').innerText="❌ Name Price likho";return;} if(imgDatas.length==0){document.getElementById('msg').innerText="❌ Photo chuno";return;} let btn=document.getElementById('saveBtn'); btn.innerText="⏳ LIVE..."; btn.disabled=true; try{gadgets.unshift({name:n,price:pr,cat:ct,imgs:imgDatas,img:imgDatas[0]}); localStorage.setItem('myGadgets',JSON.stringify(gadgets)); let token=localStorage.getItem('gh_token'); if(token){let shaRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{headers:{Authorization:`token ${token}`}}); let sha=null; if(shaRes.ok){let j=await shaRes.json(); sha=j.sha;} let content=btoa(unescape(encodeURIComponent(JSON.stringify(gadgets,null,2)))); let putRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Add ${n}`,content:content,sha:sha})}); document.getElementById('msg').innerText=putRes.ok?"✅ LIVE Hogaya!":"❌ GitHub Error";} }catch(e){document.getElementById('msg').innerText="Error: "+e.message;} document.getElementById('pName').value="";document.getElementById('pPrice').value="";document.getElementById('pCat').value="";document.getElementById('pv').innerHTML="";imgDatas=[]; render(); btn.innerText="✅ Save & Make LIVE"; btn.disabled=false;}
-function render(){let list=gadgets.filter(g=>{let mCat=currentCat=='All'||(g.cat||'').toLowerCase().includes(currentCat.toLowerCase())||g.name.toLowerCase().includes(currentCat.toLowerCase()); let mSearch=g.name.toLowerCase().includes(searchQ); return mCat&&mSearch;}); let box=document.getElementById('products'); if(list.length==0){box.innerHTML=`<div class="empty">No Products Found</div>`;return;} box.innerHTML=list.map(g=>{let realIdx=gadgets.indexOf(g); let imgs=g.imgs||[g.img]; let dots=imgs.length>1?`<div class="dots">${imgs.map((_,i)=>`<div class="dot ${i==0?'active':''}"></div>`).join('')}</div>`:'';
-return `<div class="card"><button class="card-del ${admin?'show':''}" onclick="delP(${realIdx})">✕</button><div class="card-img" onclick="openGallery(${realIdx},0)"><div class="card-badge">${imgs.length} PHOTOS</div><img src="${imgs[0]}">${dots}</div><div class="name">${g.name}</div><div class="price-row"><div><span class="price">Rs. ${g.price}</span><span class="old">Rs. ${Math.round(+g.price*1.4)}</span></div><button class="add-cart" onclick="addToCart(${realIdx})">+</button></div></div>`;}).join('');}
+document.getElementById('pFile').addEventListener('change', async e=>{
+  let files=[...e.target.files].slice(0,6); imgDatas=[]; document.getElementById('pv').innerHTML="Loading...";
+  for(let f of files){
+    if(f.size>800000) continue;
+    let data=await new Promise(r=>{let fr=new FileReader(); fr.onload=ev=>r(ev.target.result); fr.readAsDataURL(f);});
+    imgDatas.push(data);
+  }
+  document.getElementById('pv').innerHTML=imgDatas.map(d=>`<img src="${d}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #00d4ff">`).join('')+`<br><span style="color:lime;font-size:10px">✅ ${imgDatas.length} Photos Ready</span>`;
+});
+async function saveProduct(){
+  let n=document.getElementById('pName').value.trim(), pr=document.getElementById('pPrice').value.trim(), ct=document.getElementById('pCat').value.trim()||'Earbuds';
+  if(!n||!pr){document.getElementById('msg').innerText="❌ Name Price likho";return;}
+  if(imgDatas.length==0){document.getElementById('msg').innerText="❌ Photo chuno";return;}
+  let btn=document.getElementById('saveBtn'); btn.innerText="⏳ LIVE..."; btn.disabled=true;
+  try{
+    gadgets.unshift({name:n,price:pr,cat:ct,imgs:imgDatas,img:imgDatas[0]});
+    localStorage.setItem('myGadgets',JSON.stringify(gadgets));
+    let token=localStorage.getItem('gh_token');
+    if(token){
+      let shaRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{headers:{Authorization:`token ${token}`}});
+      let sha=null; if(shaRes.ok){let j=await shaRes.json(); sha=j.sha;}
+      let content=btoa(unescape(encodeURIComponent(JSON.stringify(gadgets,null,2))));
+      let putRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Add ${n}`,content:content,sha:sha})});
+      document.getElementById('msg').innerText=putRes.ok?"✅ LIVE Hogaya!":"❌ GitHub Error";
+    }
+  }catch(e){document.getElementById('msg').innerText="Error: "+e.message;}
+  document.getElementById('pName').value="";document.getElementById('pPrice').value="";document.getElementById('pCat').value="";document.getElementById('pv').innerHTML="";imgDatas=[]; render(); btn.innerText="✅ Save & Make LIVE"; btn.disabled=false;
+}
+function render(){
+  let list=gadgets.filter(g=>{let mCat=currentCat=='All'||(g.cat||'').toLowerCase().includes(currentCat.toLowerCase())||g.name.toLowerCase().includes(currentCat.toLowerCase()); let mSearch=g.name.toLowerCase().includes(searchQ); return mCat&&mSearch;});
+  let box=document.getElementById('products'); if(list.length==0){box.innerHTML=`<div class="empty">No Products Found</div>`;return;}
+  box.innerHTML=list.map(g=>{let realIdx=gadgets.indexOf(g); let imgs=g.imgs||[g.img]; let dots=imgs.length>1?`<div class="dots">${imgs.map((_,i)=>`<div class="dot ${i==0?'active':''}"></div>`).join('')}</div>`:'';
+  return `<div class="card"><button class="card-del ${admin?'show':''}" onclick="delP(${realIdx})">✕</button><div class="card-img" onclick="openGallery(${realIdx},0)"><div class="card-badge">${imgs.length} PHOTOS</div><img src="${imgs[0]}">${dots}</div><div class="name">${g.name}</div><div class="price-row"><div><span class="price">Rs. ${g.price}</span><span class="old">Rs. ${Math.round(+g.price*1.4)}</span></div><button class="add-cart" onclick="addToCart(${realIdx})">+</button></div></div>`;}).join('');
+}
 function setCat(c,el){currentCat=c; document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render();}
 function filterProducts(){searchQ=document.getElementById('searchInput').value.toLowerCase(); render();}
 async function delP(i){if(!confirm("Delete?")) return; gadgets.splice(i,1); localStorage.setItem('myGadgets',JSON.stringify(gadgets)); render(); let token=localStorage.getItem('gh_token'); if(!token) return; try{let shaRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{headers:{Authorization:`token ${token}`}}); let sha=null; if(shaRes.ok){let j=await shaRes.json(); sha=j.sha;} let content=btoa(unescape(encodeURIComponent(JSON.stringify(gadgets,null,2)))); await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Delete`,content:content,sha:sha})});}catch(e){}}
@@ -124,7 +219,7 @@ let total=cart.reduce((a,b)=>a+(+b.price*b.qty),0);
 let order={id:Date.now(),date:new Date().toLocaleString(),customer:{name,phone,address:addr},items:cart,total};
 let btn=document.getElementById('placeBtn'); btn.innerText="⏳ Sending...";
 try{
-let token=localStorage.getItem('gh_token'); if(!token){token=prompt("Admin token dalo (ya Cancel):"); }
+let token=localStorage.getItem('gh_token');
 let orders=[]; try{let r=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`); if(r.ok) orders=await r.json();}catch(e){}
 orders.unshift(order);
 if(token){
@@ -132,16 +227,15 @@ let shaRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/
 let sha=null; if(shaRes.ok){let j=await shaRes.json(); sha=j.sha;}
 let content=btoa(unescape(encodeURIComponent(JSON.stringify(orders,null,2))));
 await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ORDERS_FILE}`,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`New Order ${order.id}`,content:content,sha:sha})});
-localStorage.setItem('gh_token',token);
 }
 let text=`*NEW ORDER GadgetZone*%0AID: ${order.id}%0AName: ${name}%0APhone: ${phone}%0AAddr: ${addr}%0A%0A${cart.map(c=>`• ${c.name} x${c.qty}`).join('%0A')}%0A%0ATotal: Rs.${total}`;
 window.open(`https://wa.me/923256400449?text=${text}`,'_blank');
-alert("✅ Order Placed! Admin ko notification chala gaya");
+alert("✅ Order Placed! Admin ko RING jayegi");
 cart=[]; localStorage.setItem('myCart',JSON.stringify(cart)); updateCart(); closeCart();
 }catch(e){alert("Error: "+e.message);}
 btn.innerText="🔔 Place Order - Notify Admin";
 }
-async function showOrders(){let box=document.getElementById('ordersList'); box.style.display=box.style.display=="none"?"block":"none"; if(box.style.display=="none") return; try{let res=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`); let orders=res.ok?await res.json():[]; if(orders.length==0){box.innerHTML="<p style='color:#666'>No orders yet</p>";return;} box.innerHTML=`<h4>📦 ${orders.length} Orders (LIVE)</h4>`+orders.map(o=>`<div class="order-card"><b>#${o.id}</b> - ${o.date}<br><span style="color:#00d4ff">${o.customer.name} - ${o.customer.phone}</span><br>${o.customer.address}<br><hr style="margin:6px 0;border-color:#222"><div>${o.items.map(i=>`• ${i.name} x${i.qty}`).join('<br>')}</div><div style="font-weight:800;margin-top:6px">Total: Rs.${o.total}</div><button onclick="window.open('https://wa.me/${o.customer.phone.replace(/[^0-9]/g,'')}?text=Order Confirmed','_blank')" style="margin-top:6px;background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px">WhatsApp Customer</button></div>`).join('');}catch(e){box.innerHTML="Error loading orders";}}
+async function showOrders(){let box=document.getElementById('ordersList'); box.style.display=box.style.display=="none"?"block":"none"; if(box.style.display=="none") return; try{let res=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`); let orders=res.ok?await res.json():[]; if(orders.length==0){box.innerHTML="<p style='color:#666'>No orders yet</p>";return;} box.innerHTML=`<h4>📦 ${orders.length} Orders (LIVE)</h4>`+orders.map(o=>`<div class="order-card"><b>#${o.id}</b> - ${o.date}<br><span style="color:#00d4ff">${o.customer.name} - ${o.customer.phone}</span><br>${o.customer.address}<br><hr style="margin:6px 0;border-color:#222"><div>${o.items.map(i=>`• ${i.name} x${i.qty}`).join('<br>')}</div><div style="font-weight:800;margin-top:6px">Total: Rs.${o.total}</div><button onclick="window.open('https://wa.me/${o.customer.phone.replace(/[^0-9]/g,'')}?text=Order Confirmed','_blank')" style="margin-top:6px;background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px">WhatsApp Customer</button> <button onclick="stopRing()" style="margin-top:6px;background:red;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px">Stop Ring</button></div>`).join('');}catch(e){box.innerHTML="Error loading orders";}}
 loadProducts(); updateCart();
 </script>
 </body>
