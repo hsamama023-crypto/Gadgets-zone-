@@ -207,7 +207,7 @@ function updateCart(){
   if(cart.length==0){box.innerHTML=`<p style="text-align:center;color:#555;padding:40px">Cart Empty</p>`; document.getElementById('cartTotal').innerHTML=""; return;}
   box.innerHTML=cart.map((c,i)=>`
     <div class="cart-item">
-      <img src="${c.img}"><div style="flex:1"><div style="font-size:12px">${c.name}</div><div style="font-size:12px;color:#00d4ff">Rs. ${c.price}</div>
+      <img src="${c.img0}"><div style="flex:1"><div style="font-size:12px">${c.name}</div><div style="font-size:12px;color:#00d4ff">Rs. ${c.price}</div>
       <div class="qty"><button onclick="chgQty(${i},-1)">-</button><span>${c.qty}</span><button onclick="chgQty(${i},1)">+</button><button onclick="remCart(${i})" style="margin-left:10px;color:red;border:none;background:transparent">Remove</button></div></div>
     </div>`).join('');
   let total=cart.reduce((a,b)=>a+(+b.price*b.qty),0);
