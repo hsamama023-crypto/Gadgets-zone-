@@ -3,76 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GadgetZone - Best Gadgets in Pakistan</title>
-<link rel="stylesheet" href="style.css">
+<title>GadgetZone - Premium Gadgets</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#f6f7fb}
+header{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.05)}
+.logo{font-weight:700;font-size:18px;color:#111}
+.logo span{color:#0066ff}
+.hero{background:linear-gradient(135deg,#0066ff 0%,#00d4ff 100%);color:white;text-align:center;padding:40px 20px;border-radius:0 0 30px 30px}
+.hero h1{font-size:26px;margin-bottom:5px}
+.hero p{opacity:0.9;font-size:13px}
+.search-box{margin:-20px 20px 20px;background:white;padding:8px 15px;border-radius:15px;display:flex;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,0.08)}
+.search-box input{border:none;outline:none;width:100%;padding:8px}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:15px}
+.card{background:white;border-radius:20px;padding:12px;box-shadow:0 5px 20px rgba(0,0,0,0.05);position:relative;transition:0.2s}
+.card:active{transform:scale(0.97)}
+.card img{width:100%;height:140px;object-fit:contain;background:#f9fbff;border-radius:15px;padding:10px}
+.badge{position:absolute;top:12px;left:12px;background:#ff3b30;color:white;font-size:10px;padding:3px 8px;border-radius:20px}
+.del{position:absolute;top:12px;right:12px;background:rgba(0,0,0,0.6);color:white;border:none;width:28px;height:28px;border-radius:50%;font-size:12px;backdrop-filter:blur(5px)}
+.card h3{font-size:13px;margin:10px 0 3px;line-height:1.3;height:36px;overflow:hidden}
+.price{color:#0066ff;font-weight:700;font-size:16px}
+.old{color:#999;font-size:11px;text-decoration:line-through;margin-left:5px}
+.btns{display:flex;gap:6px;margin-top:10px}
+.btn{flex:1;padding:9px;border:none;border-radius:10px;font-size:11px;font-weight:600}
+.btn-wa{background:#111;color:white}
+.btn-fb{background:#eef2ff;color:#0066ff}
+.empty{text-align:center;padding:60px 20px;grid-column:1/3;color:#888}
+footer{text-align:center;padding:30px;color:#aaa;font-size:12px}
+</style>
 </head>
 <body>
+
 <header>
-  <h2>📱 GadgetZone</h2>
-  <div>
-    <a href="https://facebook.com" target="_blank" class="fb-link">FB</a>
-    <a href="admin.html" class="admin-link">Admin</a>
-  </div>
+<div class="logo">📱 <span>Gadget</span>Zone</div>
+<a href="admin.html" style="background:#111;color:white;padding:7px 14px;border-radius:20px;text-decoration:none;font-size:12px">Admin 🔧</a>
 </header>
 
-<div class="banner">
-  <h1>Latest Gadgets 2026</h1>
-  <p>Cash on Delivery - Gujranwala</p>
+<div class="hero">
+<h1>Premium Gadgets in Gujranwala</h1>
+<p>🔥 Free Delivery | Cash on Delivery | 1 Year Warranty</p>
 </div>
 
-<div class="search-box">
-  <input type="text" id="search" placeholder="Search... Airpods, Watch, Speaker" onkeyup="searchProduct()">
-</div>
+<div class="search-box">🔍 <input id="search" placeholder="Search Power Bank, Earbuds, Watch..." onkeyup="searchProd()"></div>
 
 <div class="products" id="products"></div>
 
-<footer>© 2026 GadgetZone | WhatsApp: 0300-XXXXXXX</footer>
+<footer>© 2026 GadgetZone Gujranwala<br>Made with ❤️ for Premium Customers</footer>
 
 <script>
-let defaultGadgets = [
-  {name:"AirPods Pro 2nd Gen", price:"4500", img:"https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=400"},
-  {name:"Smart Watch T800 Ultra", price:"2999", img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
-  {name:"Power Bank 20000mAh", price:"3200", img:"https://images.unsplash.com/photo-1609098715600-b8fe47baf65a?w=400"},
-  {name:"M10 Wireless Earbuds", price:"1499", img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"}
-];
+let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
 
-let gadgets = JSON.parse(localStorage.getItem('myGadgets'));
-if(!gadgets || gadgets.length==0){
-  gadgets = defaultGadgets;
-  localStorage.setItem('myGadgets', JSON.stringify(gadgets));
-}
-
-function display(list){
-  document.getElementById('products').innerHTML = list.map((g,i)=>`
+function display(list=gadgets){
+  let box=document.getElementById('products');
+  if(list.length==0){
+    box.innerHTML=`<div class="empty">😕 Koi Product Nahi<br><span style="font-size:12px">Admin se Gallery se Product Add Karo</span></div>`;
+    return;
+  }
+  box.innerHTML=list.map((g,i)=>`
     <div class="card">
-      <img src="${g.img}" onerror="this.src='https://via.placeholder.com/300?text=Gadget'">
+      <span class="badge">HOT</span>
+      <button class="del" onclick="delNow(${i})">✕</button>
+      <img src="${g.img}" onerror="this.src='https://via.placeholder.com/200?text=Gadget'">
       <h3>${g.name}</h3>
-      <p class="price">Rs. ${g.price}</p>
-      <button class="wa" onclick="orderWA('${g.name}','${g.price}')">WhatsApp Order 🟢</button>
-      <button class="fb" onclick="shareFB('${g.name}')">Share on Facebook 🔵</button>
+      <div><span class="price">Rs. ${g.price}</span> <span class="old">Rs. ${Math.round(g.price*1.4)}</span></div>
+      <div class="btns">
+        <button class="btn btn-wa" onclick="orderWA('${g.name}','${g.price}')">WhatsApp</button>
+        <button class="btn btn-fb" onclick="shareFB()">Share</button>
+      </div>
     </div>
   `).join('');
 }
 
-function orderWA(name, price){
-  // APNA NUMBER YAHAN LIKHO - 92 se start
-  let myNumber = "923000000000"; 
-  let msg = `Assalam-o-Alaikum!%0A%0AMujhe ye product chahiye:%0A📦 *${name}*%0A💰 Price: Rs. ${price}%0A%0AGadgetZone se order karna hai.`;
-  window.open(`https://wa.me/${myNumber}?text=${msg}`, '_blank');
+function delNow(i){
+  if(confirm("🗑️ "+gadgets[i].name+" delete karna hai?")){
+    gadgets.splice(i,1);
+    localStorage.setItem('myGadgets',JSON.stringify(gadgets));
+    display();
+  }
 }
-
-function shareFB(name){
-  let url = window.location.href;
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(name + ' - GadgetZone par available hai!')}`, '_blank');
-}
-
-function searchProduct(){
-  let q = document.getElementById('search').value.toLowerCase();
-  let filtered = gadgets.filter(g=> g.name.toLowerCase().includes(q));
+function searchProd(){
+  let q=document.getElementById('search').value.toLowerCase();
+  let filtered=gadgets.filter(g=>g.name.toLowerCase().includes(q));
   display(filtered);
 }
+function orderWA(name,price){
+  let num="923000000000"; // Apna number yahan change karo 92 se start
+  window.open(`https://wa.me/${num}?text=Salam! Mujhe ${encodeURIComponent(name)} chahiye Rs.${price} - GadgetZone`,'_blank');
+}
+function shareFB(){window.open(`https://www.facebook.com/sharer/sharer.php?u=${location.href}`,'_blank');}
 
-display(gadgets);
+display();
 </script>
 </body>
 </html>
