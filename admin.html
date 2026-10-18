@@ -6,7 +6,7 @@
 <title>GadgetZone Admin - Black</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script>
-// 🔒 LOCK - Password Check
+// 🔒 LOCK
 let pass = prompt("🔒 Admin Password Likho:");
 if(pass !== "gadgets 0827"){
   alert("❌ Ghalat Password");
@@ -17,8 +17,7 @@ if(pass !== "gadgets 0827"){
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 body{background:#000;color:white;min-height:100vh;padding:15px}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.logo{font-weight:700;font-size:20px}
-.logo span{color:#00d4ff}
+.logo{font-weight:700;font-size:20px}.logo span{color:#00d4ff}
 .box{background:#111;border:1px solid #222;border-radius:20px;padding:20px;max-width:420px;margin:0 auto 20px auto}
 .title{font-weight:700;font-size:16px;margin-bottom:15px}
 input{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #333;background:#000;color:white;outline:none;font-size:14px}
@@ -28,48 +27,57 @@ input:focus{border-color:#00d4ff}
 .btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;margin-top:10px;cursor:pointer}
 .btn-save{background:#00d4ff;color:black}
 .btn-shop{background:white;color:black}
+.btn-green{background:#22c55e;color:white}
 .products{max-width:420px;margin:0 auto}
 .p-card{background:#111;border:1px solid #222;border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
 .p-card img{width:55px;height:55px;border-radius:10px;background:#000;object-fit:contain}
-.p-info{flex:1}
-.p-name{font-size:13px;color:#eee}
-.p-price{font-size:12px;color:#00d4ff;font-weight:600}
+.p-name{font-size:13px;color:#eee}.p-price{font-size:12px;color:#00d4ff;font-weight:600}
 .del-btn{background:#ff1a1a;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:12px}
+.small{font-size:11px;color:#888;margin:5px 0}
 </style>
 </head>
 <body>
-
 <div class="top">
-  <div class="logo">Gadget<span>Zone</span> <span style="font-size:10px;color:#666;font-weight:400">ADMIN</span></div>
-  <button onclick="location.href='index.html'" style="background:#1a1a1a;color:white;border:1px solid #333;padding:7px 14px;border-radius:20px;font-size:12px">Shop Dekho →</button>
+  <div class="logo">Gadget<span>Zone</span> <span style="font-size:10px;color:#666">ADMIN LIVE</span></div>
+  <button onclick="location.href='index.html'" style="background:#1a1a1a;color:white;border:1px solid #333;padding:7px 14px;border-radius:20px;font-size:12px">Shop →</button>
+</div>
+
+<div class="box">
+<div class="title">⚙️ GitHub Connect (Pehli Bar)</div>
+<input id="gOwner" placeholder="GitHub Username e.g. hsamama023-crypto">
+<input id="gRepo" value="Gadgets-zone-" placeholder="Repo Name">
+<input id="gToken" type="password" placeholder="ghp_ Token Paste Karo">
+<button class="btn btn-green" onclick="saveConfig()">Save & Load</button>
+<div class="small">Token sirf aapke mobile me save hoga, GitHub par nahi jayega.</div>
 </div>
 
 <div class="box">
   <div class="title">➕ Naya Product Add Karo</div>
   <input id="pName" placeholder="Product Name - ex: Ronnin R-690">
   <input id="pPrice" type="number" placeholder="Price - ex: 6000">
-  
-  <div style="font-size:11px;color:#888;margin-top:10px">📸 Gallery se Photo Chuno:</div>
+  <div class="small">📸 Gallery se Photo Chuno:</div>
   <input type="file" id="pFile" accept="image/*">
-  
   <div class="preview" id="previewBox">Photo yahan dikhegi</div>
-  
-  <button class="btn btn-save" onclick="saveProduct()">✅ Save Product</button>
-  <button class="btn btn-shop" onclick="location.href='index.html'">🛒 Shop Dekho</button>
+  <button class="btn btn-save" onclick="saveProduct()">✅ Save & Make LIVE</button>
 </div>
 
 <div class="products">
-  <div style="font-size:13px;color:#888;margin-bottom:10px">📦 Saved Products (<span id="count">0</span>)</div>
-  <div id="list"></div>
+  <div style="font-size:13px;color:#888;margin-bottom:10px">📦 LIVE Products (<span id="count">0</span>)</div>
+  <div id="list">Load ho rahe hain...</div>
 </div>
 
 <script>
-let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
+let CONFIG = JSON.parse(localStorage.getItem('gz_config')||'{}');
+let gadgets = [];
+let FILE_SHA = "";
 let base64Img = "";
 
+gOwner.value = CONFIG.owner||"";
+gRepo.value = CONFIG.repo||"Gadgets-zone-";
+gToken.value = CONFIG.token||"";
+
 document.getElementById('pFile').addEventListener('change', function(e){
-  let file = e.target.files[0];
-  if(!file) return;
+  let file = e.target.files[0]; if(!file) return;
   let reader = new FileReader();
   reader.onload = function(ev){
     base64Img = ev.target.result;
@@ -78,13 +86,64 @@ document.getElementById('pFile').addEventListener('change', function(e){
   reader.readAsDataURL(file);
 });
 
+function saveConfig(){
+  CONFIG = {owner:gOwner.value.trim(), repo:gRepo.value.trim(), token:gToken.value.trim()};
+  if(!CONFIG.owner||!CONFIG.repo||!CONFIG.token) return alert('Teeno fields bharo');
+  localStorage.setItem('gz_config', JSON.stringify(CONFIG));
+  loadProducts();
+}
+
+async function loadProducts(){
+  if(!CONFIG.owner) return;
+  list.innerHTML="Loading...";
+  try{
+    let res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/products.json`);
+    let data = await res.json();
+    FILE_SHA = data.sha;
+    gadgets = JSON.parse(atob(data.content));
+    showList();
+  }catch(e){
+    gadgets=[]; FILE_SHA=""; showList();
+  }
+}
+
+function showList(){
+  count.innerText = gadgets.length;
+  list.innerHTML="";
+  if(gadgets.length==0) list.innerHTML="<div style='color:#555;font-size:12px'>Koi product nahi</div>";
+  gadgets.forEach((p,i)=>{
+    list.innerHTML+=`<div class="p-card"><img src="${p.img}"><div style="flex:1"><div class="p-name">${p.name}</div><div class="p-price">Rs.${p.price}</div></div><button class="del-btn" onclick="delProd(${i})">Delete</button></div>`;
+  });
+}
+
+async function pushToGithub(){
+  let content = btoa(unescape(encodeURIComponent(JSON.stringify(gadgets,null,2))));
+  let body = {message:"update products", content:content}; if(FILE_SHA) body.sha=FILE_SHA;
+  let res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/products.json`,{
+    method:"PUT", headers:{"Authorization":`token ${CONFIG.token}`,"Content-Type":"application/json"}, body:JSON.stringify(body)
+  });
+  let j = await res.json();
+  if(j.content){ FILE_SHA=j.content.sha; alert('✅ LIVE Ho Gaya! Ab App me sab ko dikhega'); showList(); base64Img=""; document.getElementById('previewBox').innerHTML="Photo yahan dikhegi"; }
+  else alert('Error: '+JSON.stringify(j).slice(0,200));
+}
+
 function saveProduct(){
-  let name = document.getElementById('pName').value.trim();
-  let price = document.getElementById('pPrice').value.trim();
-  if(!name || !price){ alert("❌ Name aur Price likho"); return; }
-  if(!base64Img){ alert("❌ Gallery se photo chuno"); return; }
-  
-  gadgets.push({name:name, price:price, img:base64Img});
-  localStorage.setItem('myGadgets', JSON.stringify(gadgets));
-  alert("✅ Product Add Ho Gaya!");
-  
+  if(!CONFIG.token) return alert('Pehle upar GitHub Settings Save karo');
+  let name = pName.value.trim(); let price = pPrice.value.trim();
+  if(!name||!price) return alert("❌ Name aur Price likho");
+  if(!base64Img) return alert("❌ Photo chuno");
+  gadgets.unshift({id:Date.now(), name:name, price:price, img:base64Img, category:"General"});
+  pName.value=""; pPrice.value=""; document.getElementById('pFile').value="";
+  pushToGithub();
+}
+
+function delProd(i){
+  if(!confirm('Delete pakka?')) return;
+  gadgets.splice(i,1);
+  pushToGithub();
+}
+
+if(CONFIG.owner) loadProducts();
+</script>
+</body>
+</html>
