@@ -1,83 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GadgetZone</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 body{background:#000;color:white}
-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;border-bottom:1px solid #1a1a1a;position:sticky;top:0;z-index:10}
-.logo{font-weight:700;font-size:20px;letter-spacing:0.5px}
-.logo span{color:#00d4ff}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
-.card{background:#111;border:1px solid #222;border-radius:18px;padding:12px;position:relative;transition:0.2s}
-.card img{width:100%;height:145px;object-fit:contain;background:#0a0a0a;border-radius:14px;padding:10px}
-.price{color:#00d4ff;font-weight:700;margin-top:6px;font-size:15px}
-.name{font-size:12px;margin-top:8px;line-height:1.3;height:34px;overflow:hidden;color:#eee}
-.btn{width:100%;padding:10px;border:none;border-radius:12px;margin-top:10px;font-weight:700;background:white;color:black}
+header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;border-bottom:1px solid #222;position:sticky;top:0;z-index:10}
+.logo{font-weight:700;font-size:20px} .logo span{color:#00d4ff}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;padding-bottom:100px}
+.card{background:#111;border:1px solid #222;border-radius:18px;padding:12px;position:relative}
+.card img{width:100%;height:145px;object-fit:contain;background:#0a0a0a;border-radius:14px;padding:8px}
+.price{color:#00d4ff;font-weight:700;margin-top:5px} .name{font-size:12px;margin-top:6px;height:34px;overflow:hidden;color:#ddd}
+.btn{width:100%;padding:10px;border:none;border-radius:12px;margin-top:8px;font-weight:700;background:white;color:black}
 .del{display:none;position:absolute;top:8px;right:8px;background:red;color:white;border:none;width:26px;height:26px;border-radius:50%}
 .del.show{display:block}
-#adminBar{display:none;background:red;color:white;text-align:center;padding:8px;font-size:11px}
+#adminBar{display:none;background:#00d4ff;color:black;text-align:center;padding:10px;font-size:12px;font-weight:700;position:sticky;top:58px;z-index:9}
 #adminBar.show{display:block}
-.empty{text-align:center;padding:80px 20px;color:#555;grid-column:1/3}
+#addBox{display:none;background:#111;border:2px dashed #00d4ff;border-radius:18px;padding:15px;margin:16px;max-width:400px;margin-left:auto;margin-right:auto}
+#addBox.show{display:block}
+input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #333;background:#000;color:white}
+.fab{display:none;position:fixed;bottom:20px;right:20px;background:#00d4ff;color:black;width:60px;height:60px;border-radius:50%;border:none;font-size:30px;font-weight:bold;box-shadow:0 0 30px #00d4ff;z-index:20}
+.fab.show{display:block}
 </style>
 </head>
 <body>
+<div id="adminBar">🔓 ADMIN MODE ON - Add / Delete Kar Sakte Ho</div>
+<header><div class="logo" id="logoBtn">Gadget<span>Zone</span></div><div style="font-size:10px;color:#666">5x Tap = Admin</div></header>
 
-<div id="adminBar">🔓 DELETE MODE ON - Dubara Logo 5 bar dabao to band hoga</div>
-
-<header>
-<div class="logo" id="logoBtn">Gadget<span>Zone</span></div>
-<div style="width:32px;height:32px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center">🛒</div>
-</header>
+<!-- ADD PRODUCT BOX (Sirf Admin ko dikhega) -->
+<div id="addBox">
+  <div style="font-weight:700;margin-bottom:8px">➕ Naya Product Add Karo</div>
+  <input id="pName" placeholder="Name - Ronnin R-690">
+  <input id="pPrice" type="number" placeholder="Price - 6000">
+  <input type="file" id="pFile" accept="image/*" style="color:white">
+  <div id="pv" style="margin:8px 0;text-align:center"></div>
+  <button onclick="saveP()" style="width:100%;padding:12px;background:#00d4ff;color:black;border:none;border-radius:10px;font-weight:700">✅ Add Product</button>
+  <p id="msg" style="font-size:11px;color:#00d4ff;margin-top:6px;text-align:center"></p>
+</div>
 
 <div class="products" id="products"></div>
 
+<button class="fab" id="fabBtn" onclick="toggleAdd()">+</button>
+
 <script>
-let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
-let tap=0, delMode=false;
+let gadgets = JSON.parse(localStorage.getItem('myGadgets')||'[]');
+let tap=0, admin=false, imgData="";
 
 document.getElementById('logoBtn').addEventListener('click',()=>{
-  tap++;
-  if(tap>=5){
-    let p=prompt("🔒 Admin Password:");
+  tap++; if(tap>=5){
+    let p=prompt("Admin Password:");
     if(p==="gadgets 0827"){
-      delMode=!delMode;
-      document.getElementById('adminBar').classList.toggle('show',delMode);
-      if(delMode) alert("✅ Delete ON - Ab X se delete kar sakte ho");
+      admin=!admin;
+      document.getElementById('adminBar').classList.toggle('show',admin);
+      document.getElementById('fabBtn').classList.toggle('show',admin);
+      if(admin){document.getElementById('addBox').classList.add('show');}else{document.getElementById('addBox').classList.remove('show');}
       render();
-    }else if(p!==null){alert("❌ Ghalat Password");}
+      alert(admin?"✅ Admin ON - + se Add karo":"🔒 Admin OFF");
+    }else if(p!==null){alert("❌ Ghalat");}
     tap=0;
   }
   setTimeout(()=>tap=0,3000);
 });
 
+function toggleAdd(){document.getElementById('addBox').classList.toggle('show');}
+
+document.getElementById('pFile').addEventListener('change',e=>{
+  let file=e.target.files[0]; if(!file)return;
+  if(file.size>800000){document.getElementById('msg').innerText="⚠️ Photo bari hai, chhoti chuno <800KB";return;}
+  let r=new FileReader();
+  r.onload=ev=>{
+    imgData=ev.target.result;
+    document.getElementById('pv').innerHTML=`<img src="${imgData}" style="max-height:120px;border-radius:10px"><br><span style="color:lime;font-size:11px">✅ Photo Ready</span>`;
+    document.getElementById('msg').innerText="";
+  };
+  r.readAsDataURL(file);
+});
+
+function saveP(){
+  let name=document.getElementById('pName').value.trim();
+  let price=document.getElementById('pPrice').value.trim();
+  if(!name||!price){document.getElementById('msg').innerText="❌ Name Price likho";return;}
+  if(!imgData){document.getElementById('msg').innerText="❌ Photo chuno";return;}
+  try{
+    gadgets.push({name,price,img:imgData});
+    localStorage.setItem('myGadgets',JSON.stringify(gadgets));
+    document.getElementById('msg').innerText="✅ Ho Gaya!";
+    document.getElementById('pName').value="";document.getElementById('pPrice').value="";document.getElementById('pFile').value="";document.getElementById('pv').innerHTML="";imgData="";
+    render();
+  }catch(e){document.getElementById('msg').innerText="❌ Storage Full: "+e.message;}
+}
+
 function render(){
   let box=document.getElementById('products');
-  if(gadgets.length===0){
-    box.innerHTML=`<div class="empty">No<br>Products<br>Yet<br><br><span style="font-size:11px">Logo par 5 bar tap karo > Password > Product Add</span></div>`;
-    return;
-  }
-  box.innerHTML=gadgets.map((g,i)=>`
-    <div class="card">
-      <button class="del ${delMode?'show':''}" onclick="delNow(${i})">X</button>
-      <img src="${g.img}" onerror="this.src='https://via.placeholder.com/150'">
-      <div class="name">${g.name}</div>
-      <div class="price">Rs. ${g.price}</div>
-      <button class="btn" onclick="window.open('https://wa.me/923000000000?text=Mujhe ${encodeURIComponent(g.name)} chahiye','_blank')">WhatsApp</button>
-    </div>
-  `).join('');
-}
-function delNow(i){
-  if(confirm("Delete "+gadgets[i].name+" ?")){
-    gadgets.splice(i,1);
-    localStorage.setItem('myGadgets',JSON.stringify(gadgets));
-    render();
-  }
-}
-render();
-</script>
-</body>
-</html>
+  if(gadgets.length==0){box.innerHTML=`<div style="grid-column:1/3;text-align:center;padding:60px;color:#444">No Products<br><br><span style="font-size:11px">Logo par 5x tap karo > Password > + se Add karo</span></div>`;return;}
+  box.innerHTML=gadgets.map((g,i)=>
