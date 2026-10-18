@@ -1,44 +1,34 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin</title>
-<style>body{font-family:Arial;background:#f0f4ff;padding:20px} .box{background:white;padding:20px;border-radius:15px;max-width:500px;margin:auto} input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px} button{width:100%;padding:12px;border:none;border-radius:10px;margin:6px 0;font-weight:bold} .btn-add{background:#0066ff;color:white}</style>
-</head>
-<body>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin</title>
+<script>
+let ADMIN_PASSWORD = "gadgets 0827";
+let p = prompt("🔒 Admin Password:");
+if(p !== ADMIN_PASSWORD){alert("Ghalat Password");location.href="index.html";}
+</script>
+<style>body{font-family:Arial;background:#f0f4ff;padding:15px}.box{background:white;padding:20px;border-radius:15px;max-width:500px;margin:auto}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px}button{width:100%;padding:12px;border:none;border-radius:10px;margin:6px 0;font-weight:bold} .btn-add{background:#0066ff;color:white}.btn-shop{background:#00b578;color:white}</style>
+</head><body>
 <div class="box">
-<h2>🔧 Product Add Karo</h2>
+<h2>🔧 Admin Panel</h2>
 <input id="pname" placeholder="Product Name">
-<input id="pprice" type="number" placeholder="Price e.g. 2999">
-<p style="font-size:12px">Apni Gallery se Image Chuno:</p>
+<input id="pprice" type="number" placeholder="Price">
+<p style="font-size:12px">Gallery se Image Chuno:</p>
 <input type="file" id="pfile" accept="image/*">
-<img id="preview" style="width:100%;max-height:200px;object-fit:contain;display:none;margin-top:10px;border-radius:10px">
+<img id="preview" style="width:100%;max-height:200px;display:none;margin-top:10px;border-radius:10px">
 <button class="btn-add" onclick="save()">✅ Save Product</button>
-<button style="background:#00b578;color:white" onclick="location.href='index.html'">Shop Dekho</button>
+<button class="btn-shop" onclick="location.href='index.html'">🛒 Shop Dekho</button>
 <div id="list"></div>
 </div>
 <script>
-let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');
-let base64Img=""; let editIndex=-1;
-document.getElementById('pfile').addEventListener('change',function(e){
-  let file=e.target.files[0]; let reader=new FileReader();
-  reader.onload=function(ev){ base64Img=ev.target.result; let pr=document.getElementById('preview'); pr.src=base64Img; pr.style.display='block'; }
-  reader.readAsDataURL(file);
+let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');let base64Img="";let editIndex=-1;
+document.getElementById('pfile').addEventListener('change',e=>{
+ let file=e.target.files[0];let r=new FileReader();
+ r.onload=ev=>{base64Img=ev.target.result;let pr=document.getElementById('preview');pr.src=base64Img;pr.style.display='block';};
+ r.readAsDataURL(file);
 });
-function render(){document.getElementById('list').innerHTML=gadgets.map((g,i)=>`<div style="background:#f8f9ff;padding:10px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between"><div style="display:flex;gap:10px"><img src="${g.img}" style="width:50px;height:50px;object-fit:contain"><div><b>${g.name}</b><br>Rs.${g.price}</div></div><div><button onclick="editProd(${i})">Edit</button><button onclick="del(${i})" style="background:red;color:white">X</button></div></div>`).join('')}
-function save(){
-  let name=document.getElementById('pname').value; let price=document.getElementById('pprice').value;
-  if(!name||!price){alert('Name Price likho');return;}
-  if(!base64Img && editIndex==-1){alert('Image select karo');return;}
-  let obj={name,price,img: base64Img || gadgets[editIndex].img};
-  if(editIndex>=0){gadgets[editIndex]=obj;editIndex=-1;}else{gadgets.push(obj);}
-  localStorage.setItem('myGadgets',JSON.stringify(gadgets));
-  document.getElementById('pname').value='';document.getElementById('pprice').value='';document.getElementById('pfile').value='';base64Img="";document.getElementById('preview').style.display='none';
-  render(); alert('Ho gaya Save!');
-}
+function render(){document.getElementById('list').innerHTML=gadgets.map((g,i)=>`<div style="background:#f8f9ff;padding:10px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between"><div style="display:flex;gap:10px"><img src="${g.img}" style="width:50px;height:50px"><div><b>${g.name}</b><br>Rs.${g.price}</div></div><div><button onclick="editProd(${i})">Edit</button><button onclick="del(${i})" style="background:red;color:white">X</button></div></div>`).join('');}
+function save(){let n=document.getElementById('pname').value,p=document.getElementById('pprice').value;if(!n||!p){alert('Name Price likho');return;}if(!base64Img&&editIndex==-1){alert('Image chuno');return;}let o={name:n,price:p,img:base64Img||gadgets[editIndex].img};if(editIndex>=0){gadgets[editIndex]=o;editIndex=-1;}else{gadgets.push(o);}localStorage.setItem('myGadgets',JSON.stringify(gadgets));document.getElementById('pname').value='';document.getElementById('pprice').value='';document.getElementById('pfile').value='';base64Img='';document.getElementById('preview').style.display='none';render();alert('Saved!');}
 function del(i){if(confirm('Delete?')){gadgets.splice(i,1);localStorage.setItem('myGadgets',JSON.stringify(gadgets));render();}}
 function editProd(i){document.getElementById('pname').value=gadgets[i].name;document.getElementById('pprice').value=gadgets[i].price;base64Img=gadgets[i].img;document.getElementById('preview').src=base64Img;document.getElementById('preview').style.display='block';editIndex=i;}
 render();
 </script>
-</body>
-</html>
+</body></html>
