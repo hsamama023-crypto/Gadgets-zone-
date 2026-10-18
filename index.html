@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GadgetZone - Best Gadgets in Pakistan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h2>📱 GadgetZone</h2>
+  <div>
+    <a href="https://facebook.com" target="_blank" class="fb-link">FB</a>
+    <a href="admin.html" class="admin-link">Admin</a>
+  </div>
+</header>
+
+<div class="banner">
+  <h1>Latest Gadgets 2026</h1>
+  <p>Cash on Delivery - Gujranwala</p>
+</div>
+
+<div class="search-box">
+  <input type="text" id="search" placeholder="Search... Airpods, Watch, Speaker" onkeyup="searchProduct()">
+</div>
+
+<div class="products" id="products"></div>
+
+<footer>© 2026 GadgetZone | WhatsApp: 0300-XXXXXXX</footer>
+
+<script>
+let defaultGadgets = [
+  {name:"AirPods Pro 2nd Gen", price:"4500", img:"https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=400"},
+  {name:"Smart Watch T800 Ultra", price:"2999", img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"},
+  {name:"Power Bank 20000mAh", price:"3200", img:"https://images.unsplash.com/photo-1609098715600-b8fe47baf65a?w=400"},
+  {name:"M10 Wireless Earbuds", price:"1499", img:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400"}
+];
+
+let gadgets = JSON.parse(localStorage.getItem('myGadgets'));
+if(!gadgets || gadgets.length==0){
+  gadgets = defaultGadgets;
+  localStorage.setItem('myGadgets', JSON.stringify(gadgets));
+}
+
+function display(list){
+  document.getElementById('products').innerHTML = list.map((g,i)=>`
+    <div class="card">
+      <img src="${g.img}" onerror="this.src='https://via.placeholder.com/300?text=Gadget'">
+      <h3>${g.name}</h3>
+      <p class="price">Rs. ${g.price}</p>
+      <button class="wa" onclick="orderWA('${g.name}','${g.price}')">WhatsApp Order 🟢</button>
+      <button class="fb" onclick="shareFB('${g.name}')">Share on Facebook 🔵</button>
+    </div>
+  `).join('');
+}
+
+function orderWA(name, price){
+  // APNA NUMBER YAHAN LIKHO - 92 se start
+  let myNumber = "923000000000"; 
+  let msg = `Assalam-o-Alaikum!%0A%0AMujhe ye product chahiye:%0A📦 *${name}*%0A💰 Price: Rs. ${price}%0A%0AGadgetZone se order karna hai.`;
+  window.open(`https://wa.me/${myNumber}?text=${msg}`, '_blank');
+}
+
+function shareFB(name){
+  let url = window.location.href;
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(name + ' - GadgetZone par available hai!')}`, '_blank');
+}
+
+function searchProduct(){
+  let q = document.getElementById('search').value.toLowerCase();
+  let filtered = gadgets.filter(g=> g.name.toLowerCase().includes(q));
+  display(filtered);
+}
+
+display(gadgets);
+</script>
+</body>
+</html>
