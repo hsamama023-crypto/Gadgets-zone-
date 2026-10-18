@@ -226,7 +226,7 @@ function closeCart(){document.getElementById('cartDrawer').classList.remove('ope
 function checkout(){
   let total=cart.reduce((a,b)=>a+(+b.price*b.qty),0);
   let text=`*GadgetZone Order*%0A%0A${cart.map(c=>`• ${c.name} x${c.qty} = Rs.${c.price*c.qty}`).join('%0A')}%0A%0A*Total: Rs. ${total}*%0A%0AName:%0AAddress:%0APhone:`;
-  window.open(`https://wa.me/923000000000?text=${text}`,'_blank');
+  window.open(`https://wa.me/923256400449?text=${text}`,'_blank');
 }
 updateCart(); render();
 </script>
