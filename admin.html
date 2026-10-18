@@ -1,34 +1,90 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GadgetZone Admin - Black</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <script>
-let ADMIN_PASSWORD = "gadgets 0827";
-let p = prompt("🔒 Admin Password:");
-if(p !== ADMIN_PASSWORD){alert("Ghalat Password");location.href="index.html";}
+// 🔒 LOCK - Password Check
+let pass = prompt("🔒 Admin Password Likho:");
+if(pass !== "gadgets 0827"){
+  alert("❌ Ghalat Password");
+  window.location.href = "index.html";
+}
 </script>
-<style>body{font-family:Arial;background:#f0f4ff;padding:15px}.box{background:white;padding:20px;border-radius:15px;max-width:500px;margin:auto}input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px}button{width:100%;padding:12px;border:none;border-radius:10px;margin:6px 0;font-weight:bold} .btn-add{background:#0066ff;color:white}.btn-shop{background:#00b578;color:white}</style>
-</head><body>
-<div class="box">
-<h2>🔧 Admin Panel</h2>
-<input id="pname" placeholder="Product Name">
-<input id="pprice" type="number" placeholder="Price">
-<p style="font-size:12px">Gallery se Image Chuno:</p>
-<input type="file" id="pfile" accept="image/*">
-<img id="preview" style="width:100%;max-height:200px;display:none;margin-top:10px;border-radius:10px">
-<button class="btn-add" onclick="save()">✅ Save Product</button>
-<button class="btn-shop" onclick="location.href='index.html'">🛒 Shop Dekho</button>
-<div id="list"></div>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#000;color:white;min-height:100vh;padding:15px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.logo{font-weight:700;font-size:20px}
+.logo span{color:#00d4ff}
+.box{background:#111;border:1px solid #222;border-radius:20px;padding:20px;max-width:420px;margin:0 auto 20px auto}
+.title{font-weight:700;font-size:16px;margin-bottom:15px}
+input{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #333;background:#000;color:white;outline:none;font-size:14px}
+input:focus{border-color:#00d4ff}
+.preview{width:100%;height:200px;background:#000;border:1px dashed #333;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:10px 0;color:#555;font-size:12px}
+.preview img{width:100%;height:100%;object-fit:contain}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;margin-top:10px;cursor:pointer}
+.btn-save{background:#00d4ff;color:black}
+.btn-shop{background:white;color:black}
+.products{max-width:420px;margin:0 auto}
+.p-card{background:#111;border:1px solid #222;border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;margin-bottom:10px}
+.p-card img{width:55px;height:55px;border-radius:10px;background:#000;object-fit:contain}
+.p-info{flex:1}
+.p-name{font-size:13px;color:#eee}
+.p-price{font-size:12px;color:#00d4ff;font-weight:600}
+.del-btn{background:#ff1a1a;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">Gadget<span>Zone</span> <span style="font-size:10px;color:#666;font-weight:400">ADMIN</span></div>
+  <button onclick="location.href='index.html'" style="background:#1a1a1a;color:white;border:1px solid #333;padding:7px 14px;border-radius:20px;font-size:12px">Shop Dekho →</button>
 </div>
+
+<div class="box">
+  <div class="title">➕ Naya Product Add Karo</div>
+  <input id="pName" placeholder="Product Name - ex: Ronnin R-690">
+  <input id="pPrice" type="number" placeholder="Price - ex: 6000">
+  
+  <div style="font-size:11px;color:#888;margin-top:10px">📸 Gallery se Photo Chuno:</div>
+  <input type="file" id="pFile" accept="image/*">
+  
+  <div class="preview" id="previewBox">Photo yahan dikhegi</div>
+  
+  <button class="btn btn-save" onclick="saveProduct()">✅ Save Product</button>
+  <button class="btn btn-shop" onclick="location.href='index.html'">🛒 Shop Dekho</button>
+</div>
+
+<div class="products">
+  <div style="font-size:13px;color:#888;margin-bottom:10px">📦 Saved Products (<span id="count">0</span>)</div>
+  <div id="list"></div>
+</div>
+
 <script>
-let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');let base64Img="";let editIndex=-1;
-document.getElementById('pfile').addEventListener('change',e=>{
- let file=e.target.files[0];let r=new FileReader();
- r.onload=ev=>{base64Img=ev.target.result;let pr=document.getElementById('preview');pr.src=base64Img;pr.style.display='block';};
- r.readAsDataURL(file);
+let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
+let base64Img = "";
+
+document.getElementById('pFile').addEventListener('change', function(e){
+  let file = e.target.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = function(ev){
+    base64Img = ev.target.result;
+    document.getElementById('previewBox').innerHTML = `<img src="${base64Img}">`;
+  };
+  reader.readAsDataURL(file);
 });
-function render(){document.getElementById('list').innerHTML=gadgets.map((g,i)=>`<div style="background:#f8f9ff;padding:10px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between"><div style="display:flex;gap:10px"><img src="${g.img}" style="width:50px;height:50px"><div><b>${g.name}</b><br>Rs.${g.price}</div></div><div><button onclick="editProd(${i})">Edit</button><button onclick="del(${i})" style="background:red;color:white">X</button></div></div>`).join('');}
-function save(){let n=document.getElementById('pname').value,p=document.getElementById('pprice').value;if(!n||!p){alert('Name Price likho');return;}if(!base64Img&&editIndex==-1){alert('Image chuno');return;}let o={name:n,price:p,img:base64Img||gadgets[editIndex].img};if(editIndex>=0){gadgets[editIndex]=o;editIndex=-1;}else{gadgets.push(o);}localStorage.setItem('myGadgets',JSON.stringify(gadgets));document.getElementById('pname').value='';document.getElementById('pprice').value='';document.getElementById('pfile').value='';base64Img='';document.getElementById('preview').style.display='none';render();alert('Saved!');}
-function del(i){if(confirm('Delete?')){gadgets.splice(i,1);localStorage.setItem('myGadgets',JSON.stringify(gadgets));render();}}
-function editProd(i){document.getElementById('pname').value=gadgets[i].name;document.getElementById('pprice').value=gadgets[i].price;base64Img=gadgets[i].img;document.getElementById('preview').src=base64Img;document.getElementById('preview').style.display='block';editIndex=i;}
-render();
-</script>
-</body></html>
+
+function saveProduct(){
+  let name = document.getElementById('pName').value.trim();
+  let price = document.getElementById('pPrice').value.trim();
+  if(!name || !price){ alert("❌ Name aur Price likho"); return; }
+  if(!base64Img){ alert("❌ Gallery se photo chuno"); return; }
+  
+  gadgets.push({name:name, price:price, img:base64Img});
+  localStorage.setItem('myGadgets', JSON.stringify(gadgets));
+  alert("✅ Product Add Ho Gaya!");
+  
