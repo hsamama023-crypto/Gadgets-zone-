@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - GadgetZone</title>
+<style>
+body{font-family:Arial;background:#f0f4ff;padding:20px;margin:0}
+.box{background:white;padding:20px;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,0.1);max-width:500px;margin:auto}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px;box-sizing:border-box}
+button{width:100%;padding:12px;border:none;border-radius:10px;margin:6px 0;cursor:pointer;font-weight:bold}
+.btn-add{background:#0066ff;color:white}
+.btn-shop{background:#00b578;color:white}
+.item{background:#f8f9ff;padding:12px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;border:1px solid #eee}
+.item img{width:50px;height:50px;object-fit:contain;border-radius:8px}
+.small-btn{width:auto;padding:6px 12px;margin-left:5px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🔧 Admin Panel</h2>
+<p style="font-size:13px;color:gray">Yahan se product add / price change karo. Save karte hi shop par update ho jayega.</p>
+
+<input type="text" id="pname" placeholder="Product Name: e.g. AirPods Pro">
+<input type="number" id="pprice" placeholder="Price: e.g. 4500">
+<input type="text" id="pimg" placeholder="Image Link (optional) - Google se copy karo">
+
+<button class="btn-add" onclick="saveProduct()">✅ Save Product</button>
+<button class="btn-shop" onclick="location.href='index.html'">🛒 Go To Shop</button>
+
+<h3 style="margin-top:25px">Aap ke Products:</h3>
+<div id="list"></div>
+</div>
+
+<script>
+let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
+let editIndex = -1;
+
+function render(){
+  document.getElementById('list').innerHTML = gadgets.map((g,i)=>`
+    <div class="item">
+      <div style="display:flex;align-items:center;gap:10px"><img src="${g.img}"><div><b>${g.name}</b><br>Rs. ${g.price}</div></div>
+      <div><button class="small-btn" onclick="editProd(${i})">Edit</button><button class="small-btn" style="background:red;color:white" onclick="deleteProd(${i})">X</button></div>
+    </div>
+  `).join('') || '<p style="color:gray">Koi product nahi hai</p>';
+}
+
+function saveProduct(){
+  let name = document.getElementById('pname').value.trim();
+  let price = document.getElementById('pprice').value.trim();
+  let img = document.getElementById('pimg').value.trim();
+  if(!name || !price){ alert('Name aur Price lazmi hai!'); return; }
+  if(!img) img = 'https://via.placeholder.com/300?text='+encodeURIComponent(name);
+  let obj = {name, price, img};
+  if(editIndex >= 0){ gadgets[editIndex]=obj; editIndex=-1; } else { gadgets.push(obj); }
+  localStorage.setItem('myGadgets', JSON.stringify(gadgets));
+  document.getElementById('pname').value=''; document.getElementById('pprice').value=''; document.getElementById('pimg').value='';
+  render(); alert('Product Save Ho Gaya! Shop check karo.');
+}
+
+function deleteProd(i){
+  if(confirm('Delete karna hai?')){ gadgets.splice(i,1); localStorage.setItem('myGadgets', JSON.stringify(gadgets)); render(); }
+}
+function editProd(i){
+  document.getElementById('pname').value = gadgets[i].name;
+  document.getElementById('pprice').value = gadgets[i].price;
+  document.getElementById('pimg').value = gadgets[i].img;
+  editIndex = i; window.scrollTo(0,0);
+}
+render();
+</script>
+</body>
+</html>
