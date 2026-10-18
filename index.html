@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GadgetZone - Black 4D</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GadgetZone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:white;font-family:'Poppins',sans-serif;overflow-x:hidden}
-header{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,102,255,0.2);position:sticky;top:0;z-index:10}
-.logo{font-family:'Orbitron';font-weight:800;font-size:20px;letter-spacing:1px;text-shadow:0 0 20px #0066ff}
-.logo span{color:#00d4ff;text-shadow:0 0 15px #00d4ff}
-.search{margin:15px;background:rgba(255,255,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:50px;padding:12px 18px;display:flex;gap:10px;backdrop-filter:blur(10px);box-shadow:0 0 30px rgba(0,102,255,0.15) inset}
-.search input{background:transparent;border:none;outline:none;color:white;width:100%}
-.hero{margin:15px;background:linear-gradient(135deg,rgba(0,102,255,0.2),rgba(0,212,255,0.15));border:1px solid rgba(0,212,255,0.3);border-radius:25px;padding:20px;box-shadow:0 0 40px rgba(0,102,255,0.3),inset 0 0 20px rgba(0,212,255,0.1)}
-.hero h2{font-family:'Orbitron';font-size:16px;color:#00d4ff}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:15px}
-.card{background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));border:1px solid rgba(0,212,255,0.25);border-radius:22px;padding:12px;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,0.5),0 0 20px rgba(0,102,255,0.2) inset;transform:perspective(1000px) rotateX(2deg);transition:0.3s}
-.card:active{transform:perspective(1000px) scale(0.96)}
-.card img{width:100%;height:135px;object-fit:contain;background:radial-gradient(circle,rgba(0,212,255,0.15),transparent);border-radius:15px;padding:10px;filter:drop-shadow(0 10px 20px rgba(0,102,255,0.5))}
-.price{color:#00d4ff;font-weight:700;text-shadow:0 0 10px #00d4ff;font-size:16px}
-.del{display:none;position:absolute;top:10px;right:10px;background:red;border:none;color:white;width:28px;height:28px;border-radius:50%}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#000;color:white}
+header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;background:#0a0a0a;border-bottom:1px solid #1a1a1a;position:sticky;top:0;z-index:10}
+.logo{font-weight:700;font-size:20px;letter-spacing:0.5px}
+.logo span{color:#00d4ff}
+.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+.card{background:#111;border:1px solid #222;border-radius:18px;padding:12px;position:relative;transition:0.2s}
+.card img{width:100%;height:145px;object-fit:contain;background:#0a0a0a;border-radius:14px;padding:10px}
+.price{color:#00d4ff;font-weight:700;margin-top:6px;font-size:15px}
+.name{font-size:12px;margin-top:8px;line-height:1.3;height:34px;overflow:hidden;color:#eee}
+.btn{width:100%;padding:10px;border:none;border-radius:12px;margin-top:10px;font-weight:700;background:white;color:black}
+.del{display:none;position:absolute;top:8px;right:8px;background:red;color:white;border:none;width:26px;height:26px;border-radius:50%}
 .del.show{display:block}
-.btn{width:100%;padding:10px;border:none;border-radius:12px;margin-top:8px;font-weight:700;letter-spacing:0.5px}
-.btn-wa{background:linear-gradient(90deg,#0066ff,#00d4ff);color:white;box-shadow:0 0 20px rgba(0,102,255,0.5)}
-#adminBar{display:none;background:linear-gradient(90deg,#ff0000,#ff6a00);padding:10px;text-align:center;font-size:12px}
+#adminBar{display:none;background:red;color:white;text-align:center;padding:8px;font-size:11px}
 #adminBar.show{display:block}
+.empty{text-align:center;padding:80px 20px;color:#555;grid-column:1/3}
 </style>
 </head>
 <body>
-<div id="adminBar">🔓 DELETE MODE ON - 5 tap se band karo</div>
-<header><div class="logo" id="logoBtn">Gadget<span>Zone</span></div><div style="font-size:10px;color:#00d4ff;opacity:0.6">BLACK 4D EDITION</div></header>
-<div class="search">🔍<input id="q" placeholder="Search gadgets 4D..." onkeyup="searchP()"></div>
-<div class="hero"><h2>⚡ 4D • NEW DROP</h2><p style="font-size:13px;opacity:0.8;margin-top:5px">Elevate Your Tech - Next-Gen 3D Experience</p></div>
+
+<div id="adminBar">🔓 DELETE MODE ON - Dubara Logo 5 bar dabao to band hoga</div>
+
+<header>
+<div class="logo" id="logoBtn">Gadget<span>Zone</span></div>
+<div style="width:32px;height:32px;background:#1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center">🛒</div>
+</header>
+
 <div class="products" id="products"></div>
+
 <script>
-let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');
-let tap=0,delMode=false;
+let gadgets = JSON.parse(localStorage.getItem('myGadgets') || '[]');
+let tap=0, delMode=false;
+
 document.getElementById('logoBtn').addEventListener('click',()=>{
- tap++; if(tap==5){ let p=prompt("🔒 Password:"); if(p=="gadgets 0827"){delMode=true;document.getElementById('adminBar').classList.add('show');render();} tap=0;} setTimeout(()=>tap=0,3000);
+  tap++;
+  if(tap>=5){
+    let p=prompt("🔒 Admin Password:");
+    if(p==="gadgets 0827"){
+      delMode=!delMode;
+      document.getElementById('adminBar').classList.toggle('show',delMode);
+      if(delMode) alert("✅ Delete ON - Ab X se delete kar sakte ho");
+      render();
+    }else if(p!==null){alert("❌ Ghalat Password");}
+    tap=0;
+  }
+  setTimeout(()=>tap=0,3000);
 });
-function render(list=gadgets){
- let b=document.getElementById('products');
- if(list.length==0){b.innerHTML="<p style='text-align:center;padding:50px;opacity:0.4'>No Products Yet</p>";return;}
- b.innerHTML=list.map((g,i)=>`
-  <div class="card"><button class="del ${delMode?'show':''}" onclick="delNow(${i})">X</button><img src="${g.img}"><h3 style="font-size:12px;margin:8px 0;height:32px;overflow:hidden">${g.name}</h3><div class="price">Rs. ${g.price}</div><button class="btn btn-wa" onclick="window.open('https://wa.me/923000000000?text=${g.name}')">BUY NOW</button></div>
- `).join('');
+
+function render(){
+  let box=document.getElementById('products');
+  if(gadgets.length===0){
+    box.innerHTML=`<div class="empty">No<br>Products<br>Yet<br><br><span style="font-size:11px">Logo par 5 bar tap karo > Password > Product Add</span></div>`;
+    return;
+  }
+  box.innerHTML=gadgets.map((g,i)=>`
+    <div class="card">
+      <button class="del ${delMode?'show':''}" onclick="delNow(${i})">X</button>
+      <img src="${g.img}" onerror="this.src='https://via.placeholder.com/150'">
+      <div class="name">${g.name}</div>
+      <div class="price">Rs. ${g.price}</div>
+      <button class="btn" onclick="window.open('https://wa.me/923000000000?text=Mujhe ${encodeURIComponent(g.name)} chahiye','_blank')">WhatsApp</button>
+    </div>
+  `).join('');
 }
-function delNow(i){ if(confirm("Delete?")){gadgets.splice(i,1);localStorage.setItem('myGadgets',JSON.stringify(gadgets));render();}}
-function searchP(){ let q=document.getElementById('q').value.toLowerCase(); render(gadgets.filter(g=>g.name.toLowerCase().includes(q))); }
+function delNow(i){
+  if(confirm("Delete "+gadgets[i].name+" ?")){
+    gadgets.splice(i,1);
+    localStorage.setItem('myGadgets',JSON.stringify(gadgets));
+    render();
+  }
+}
 render();
 </script>
 </body>
