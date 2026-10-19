@@ -1,56 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Gadgets Zone</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;padding:20px}
-.box{background:#111;border:1px solid #222;border-radius:20px;padding:30px;width:100%;max-width:380px;text-align:center}
-.logo{font-size:30px;font-weight:800;margin-bottom:10px}.logo span{color:#f85606}
-.btn{width:100%;padding:13px;background:#fff;color:#000;border:none;border-radius:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px;cursor:pointer}
-.btn.google{background:#fff;border:1px solid #ddd}
-.btn.guest{background:#222;color:#fff;border:1px solid #333}
-p{font-size:11px;color:#777;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="box">
-  <div class="logo">Gadget<span>Zone</span></div>
-  <h3 style="margin:10px 0">Welcome Back!</h3>
-  <p style="margin-bottom:20px;color:#aaa">Login to continue shopping</p>
-  
-  <button class="btn google" onclick="loginGoogle()">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Continue with Google
-  </button>
-  <button class="btn guest" onclick="guest()">Continue as Guest</button>
-  
-  <p>Secure Login • Gadgets Zone</p>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - Gadgets Zone</title>
+<style>body{background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}.box{background:#111;padding:30px;border-radius:20px;width:90%;max-width:360px;text-align:center;border:1px solid #222}.btn{width:100%;padding:14px;border-radius:10px;border:none;font-weight:700;margin-top:12px;cursor:pointer}.google{background:#fff;color:#000}.guest{background:#222;color:#fff}</style></head><body><div class="box"><h2>Gadget<span style="color:#f85606">Zone</span></h2><p style="color:#aaa;font-size:12px;margin:10px 0 20px">Login to Continue</p>
+<button class="btn google" onclick="login()">Continue with Google</button>
+<button class="btn guest" onclick="guestLogin()">Continue as Guest</button></div>
 <script>
-// 👇 YAHAN APNA FIREBASE CONFIG DALO - Firebase se milega
-const firebaseConfig = {
-  apiKey: "AIzaSy...YOUR_KEY",
-  authDomain: "gadgets-zone-xxx.firebaseapp.com",
-  projectId: "gadgets-zone-xxx",
-  appId: "1:123456:web:xxx"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-function loginGoogle(){
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).then(res=>{
-    localStorage.setItem('gz_user', JSON.stringify({name:res.user.displayName, email:res.user.email, photo:res.user.photoURL}));
-    location.href="index.html";
-  }).catch(e=>alert(e.message));
-}
-function guest(){
-  localStorage.setItem('gz_user','guest');
-  location.href="index.html";
-}
-</script>
-</body>
-</html>
+function login(){let n=prompt("Naam likho:");let e=prompt("Email:");if(n){localStorage.setItem('gz_user', JSON.stringify({name:n,email:e})); location.href="index.html";}}
+function guestLogin(){localStorage.setItem('gz_user','guest'); location.href="index.html";}
+</script></body></html>
