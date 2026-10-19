@@ -1,8 +1,74 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - Gadgets Zone</title>
-<style>body{background:#000;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}.box{background:#111;padding:30px;border-radius:20px;width:90%;max-width:360px;text-align:center;border:1px solid #222}.btn{width:100%;padding:14px;border-radius:10px;border:none;font-weight:700;margin-top:12px;cursor:pointer}.google{background:#fff;color:#000}.guest{background:#222;color:#fff}</style></head><body><div class="box"><h2>Gadget<span style="color:#f85606">Zone</span></h2><p style="color:#aaa;font-size:12px;margin:10px 0 20px">Login to Continue</p>
-<button class="btn google" onclick="login()">Continue with Google</button>
-<button class="btn guest" onclick="guestLogin()">Continue as Guest</button></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Gadgets Zone</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{background:#0a0a0a;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.login-card{background:#141414;border:1px solid #222;border-radius:24px;width:100%;max-width:400px;overflow:hidden}
+.top{padding:28px 24px 18px;text-align:center;border-bottom:1px solid #1e1e1e}
+.logo{font-size:28px;font-weight:800;letter-spacing:-.5px}.logo span{color:#f85606}
+.top h2{font-size:18px;margin-top:12px;font-weight:600}.top p{font-size:12.5px;color:#888;margin-top:6px}
+.form{padding:22px 24px 24px}
+.label{font-size:11px;color:#aaa;margin:12px 0 6px;display:block;text-transform:uppercase;letter-spacing:.5px}
+.input{width:100%;background:#1c1c1c;border:1px solid #2a2a2a;color:#fff;padding:13px 14px;border-radius:12px;font-size:13.5px;outline:none}
+.input:focus{border-color:#f85606}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:14px;transition:.2s}
+.btn-login{background:#f85606;color:#fff}.btn-login:active{transform:scale(.98)}
+.btn-google{background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn-guest{background:#232323;color:#fff;border:1px solid #333}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#555;font-size:11px}.divider::before,.divider::after{content:"";flex:1;height:1px;background:#222}
+.footer{font-size:11px;color:#666;text-align:center;margin-top:16px}.footer a{color:#aaa;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="login-card">
+  <div class="top">
+    <div class="logo">Gadget<span>Zone</span></div>
+    <h2>Welcome Back</h2>
+    <p>Login to your Gadgets Zone account</p>
+  </div>
+  <div class="form">
+    <label class="label">Email Address</label>
+    <input id="email" class="input" type="email" placeholder="yourname@gmail.com">
+    
+    <label class="label">Password</label>
+    <input id="pass" class="input" type="password" placeholder="••••••••">
+    
+    <button class="btn btn-login" onclick="doLogin()">Login</button>
+    
+    <div class="divider">OR</div>
+    
+    <button class="btn btn-google" onclick="googleLogin()">
+      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Continue with Google
+    </button>
+    <button class="btn btn-guest" onclick="guestLogin()">Continue as Guest</button>
+    
+    <div class="footer">By continuing, you agree to Gadgets Zone <a href="#">Terms</a> & <a href="#">Privacy</a></div>
+  </div>
+</div>
+
 <script>
-function login(){let n=prompt("Naam likho:");let e=prompt("Email:");if(n){localStorage.setItem('gz_user', JSON.stringify({name:n,email:e})); location.href="index.html";}}
-function guestLogin(){localStorage.setItem('gz_user','guest'); location.href="index.html";}
-</script></body></html>
+function doLogin(){
+  let e=document.getElementById('email').value;
+  let p=document.getElementById('pass').value;
+  if(!e || !p){ alert("Email aur Password likho!"); return; }
+  localStorage.setItem('gz_user', JSON.stringify({name:e.split('@')[0], email:e}));
+  location.href="index.html";
+}
+function googleLogin(){
+  let e=prompt("Apna Google Email likho:");
+  if(!e) return;
+  localStorage.setItem('gz_user', JSON.stringify({name:e.split('@')[0], email:e, photo:""}));
+  location.href="index.html";
+}
+function guestLogin(){
+  localStorage.setItem('gz_user','guest');
+  location.href="index.html";
+}
+</script>
+</body>
+</html>
