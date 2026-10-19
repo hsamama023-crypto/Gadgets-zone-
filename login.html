@@ -1,68 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Gadgets Zone</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 body{background:#0a0a0a;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.login-card{background:#141414;border:1px solid #222;border-radius:24px;width:100%;max-width:400px;overflow:hidden}
+.card{background:#141414;border:1px solid #222;border-radius:24px;width:100%;max-width:400px;overflow:hidden}
 .top{padding:28px 24px 18px;text-align:center;border-bottom:1px solid #1e1e1e}
-.logo{font-size:28px;font-weight:800;letter-spacing:-.5px}.logo span{color:#f85606}
-.top h2{font-size:18px;margin-top:12px;font-weight:600}.top p{font-size:12.5px;color:#888;margin-top:6px}
+.logo{font-size:28px;font-weight:800}.logo span{color:#f85606}
 .form{padding:22px 24px 24px}
-.label{font-size:11px;color:#aaa;margin:12px 0 6px;display:block;text-transform:uppercase;letter-spacing:.5px}
+.label{font-size:11px;color:#aaa;margin:12px 0 6px;display:block;text-transform:uppercase}
 .input{width:100%;background:#1c1c1c;border:1px solid #2a2a2a;color:#fff;padding:13px 14px;border-radius:12px;font-size:13.5px;outline:none}
-.input:focus{border-color:#f85606}
-.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:14px;transition:.2s}
-.btn-login{background:#f85606;color:#fff}.btn-login:active{transform:scale(.98)}
-.btn-google{background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:10px}
-.btn-guest{background:#232323;color:#fff;border:1px solid #333}
-.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:#555;font-size:11px}.divider::before,.divider::after{content:"";flex:1;height:1px;background:#222}
-.footer{font-size:11px;color:#666;text-align:center;margin-top:16px}.footer a{color:#aaa;text-decoration:none}
+.input.error{border-color:red}
+.err{color:#ff4d4d;font-size:11px;margin-top:4px;display:none}
+.btn{width:100%;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:14px}
+.btn-login{background:#f85606;color:#fff}
+.btn-google{background:#fff;color:#000;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px}
+.info{background:#1e1e1e;padding:10px;border-radius:8px;font-size:11px;color:#888;margin-top:14px;line-height:1.5}
 </style>
 </head>
 <body>
-<div class="login-card">
-  <div class="top">
-    <div class="logo">Gadget<span>Zone</span></div>
-    <h2>Welcome Back</h2>
-    <p>Login to your Gadgets Zone account</p>
-  </div>
+<div class="card">
+  <div class="top"><div class="logo">Gadget<span>Zone</span></div><h2 style="margin-top:10px">Login</h2><p style="font-size:12px;color:#888">Sahi Email & Password se login hoga</p></div>
   <div class="form">
-    <label class="label">Email Address</label>
-    <input id="email" class="input" type="email" placeholder="yourname@gmail.com">
-    
+    <label class="label">Email</label>
+    <input id="email" class="input" type="email" placeholder="admin@gadgetszone.com">
+    <div id="e-err" class="err">Sahi email likho</div>
     <label class="label">Password</label>
     <input id="pass" class="input" type="password" placeholder="••••••••">
-    
+    <div id="p-err" class="err">Password ghalat hai</div>
     <button class="btn btn-login" onclick="doLogin()">Login</button>
-    
-    <div class="divider">OR</div>
-    
-    <button class="btn btn-google" onclick="googleLogin()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"> Continue with Google
-    </button>
-    <button class="btn btn-guest" onclick="guestLogin()">Continue as Guest</button>
-    
-    <div class="footer">By continuing, you agree to Gadgets Zone <a href="#">Terms</a> & <a href="#">Privacy</a></div>
+    <button class="btn btn-google" onclick="guestLogin()">Continue as Guest</button>
+    <div class="info">
+      <b>Demo Login:</b><br>
+      Email: admin@gadgetszone.com<br>
+      Password: 123456
+    </div>
   </div>
 </div>
-
 <script>
+// YAHAN APNE SAHI LOGIN DETAILS SET KARO
+const VALID_USER = {
+  email: "admin@gadgetszone.com",
+  password: "123456"
+};
+
 function doLogin(){
-  let e=document.getElementById('email').value;
-  let p=document.getElementById('pass').value;
-  if(!e || !p){ alert("Email aur Password likho!"); return; }
-  localStorage.setItem('gz_user', JSON.stringify({name:e.split('@')[0], email:e}));
-  location.href="index.html";
-}
-function googleLogin(){
-  let e=prompt("Apna Google Email likho:");
-  if(!e) return;
-  localStorage.setItem('gz_user', JSON.stringify({name:e.split('@')[0], email:e, photo:""}));
+  let e = document.getElementById('email').value.trim();
+  let p = document.getElementById('pass').value.trim();
+  let eErr = document.getElementById('e-err');
+  let pErr = document.getElementById('p-err');
+  eErr.style.display="none"; pErr.style.display="none";
+  
+  // 1. Email format check
+  if(!e.includes("@") || !e.includes(".")){ eErr.innerText="Email format ghalat hai"; eErr.style.display="block"; return; }
+  // 2. Password check
+  if(p.length < 6){ pErr.innerText="Password kam se kam 6 harf ka ho"; pErr.style.display="block"; return; }
+  // 3. Sahi user check - koi bhi random login nahi chalega
+  if(e !== VALID_USER.email || p !== VALID_USER.password){
+    pErr.innerText="Email ya Password ghalat hai! Demo use karo";
+    pErr.style.display="block";
+    alert("Login Failed! Sahi details: admin@gadgetszone.com / 123456");
+    return;
+  }
+  // Success
+  localStorage.setItem('gz_user', JSON.stringify({email:e, name:"Admin"}));
   location.href="index.html";
 }
 function guestLogin(){
