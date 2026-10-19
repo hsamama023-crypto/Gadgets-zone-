@@ -77,7 +77,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(0,0,0,0.9);backdrop-fil
 <input id="pName" placeholder="Name"><input id="pPrice" type="number" placeholder="Price"><input id="pCat" placeholder="Category">
 <input type="file" id="pFile" accept="image/*" multiple><p style="font-size:10px;color:#888">Max 6 photos select karo</p>
 <div id="pv" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0"></div>
-<button onclick="saveProduct()" id="saveBtn" style="width:100%;padding:12px;background:#00d4ff;color:#000;border:none;border-radius:12px;font-weight:800">✅ Save & Make LIVE</button>
+<button onclick="saveProduct()" id="saveBtn" style="width:100%;padding:12px;background:#00d4ff;color:#000;border:none;border-radius:12px;font-weight:800">✅ Save & Make LIVE</button> 
+<button onclick="deleteOrder('1792344831056')" style="background:red;color:white;padding:8px;border-radius:8px;margin-top:5px">Order Complete - Delete</button>
 <p id="msg" style="text-align:center;font-size:11px;color:#00d4ff;margin-top:6px"></p>
 <div id="ordersList" style="display:none;margin-top:16px;border-top:1px solid #222;padding-top:12px"></div>
 </div>
@@ -111,6 +112,12 @@ function closeCart(){document.getElementById('cartDrawer').classList.remove('ope
 async function placeOrder(){let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),addr=document.getElementById('cAddr').value.trim();if(!name||!phone||!addr){alert("Name Phone Address likho");return;}let total=cart.reduce((a,b)=>a+(+b.price*b.qty),0);let order={id:Date.now(),date:new Date().toLocaleString(),customer:{name,phone:fixPhone(phone),address:addr},items:cart,total};let btn=document.getElementById('placeBtn');btn.innerText="⏳ Sending...";try{let token=localStorage.getItem('gh_token');let orders=[];try{let r=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`);if(r.ok)orders=await r.json();}catch(e){}orders.unshift(order);if(token){let shaRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ORDERS_FILE}`,{headers:{Authorization:`token ${token}`}});let sha=null;if(shaRes.ok){let j=await shaRes.json();sha=j.sha;}let content=btoa(unescape(encodeURIComponent(JSON.stringify(orders,null,2))));await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ORDERS_FILE}`,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify({message:`New Order ${order.id}`,content:content,sha:sha})});}let text=`*NEW ORDER GadgetZone*%0AID: ${order.id}%0AName: ${name}%0APhone: ${fixPhone(phone)}%0AAddr: ${addr}%0A%0A${cart.map(c=>`• ${c.name} x${c.qty}`).join('%0A')}%0A%0ATotal: Rs.${total}`;window.open(`https://wa.me/923256400449?text=${text}`,'_blank');alert("✅ Order Placed!");cart=[];localStorage.setItem('myCart',JSON.stringify(cart));updateCart();closeCart();}catch(e){alert("Error: "+e.message);}btn.innerText="🔔 Place Order - Notify Admin";}
 async function showOrders(){let box=document.getElementById('ordersList');box.style.display=box.style.display=="none"?"block":"none";if(box.style.display=="none")return;try{let res=await fetch(`./${ORDERS_FILE}?v=${Date.now()}`);let orders=res.ok?await res.json():[];if(orders.length==0){box.innerHTML="<p style='color:#666'>No orders yet</p>";return;}box.innerHTML=`<h4>📦 ${orders.length} Orders (LIVE)</h4>`+orders.map(o=>`<div class="order-card"><b>#${o.id}</b> - ${o.date}<br><span style="color:#00d4ff">${o.customer.name} - ${o.customer.phone}</span><br>${o.customer.address}<br><hr style="margin:6px 0;border-color:#222"><div>${o.items.map(i=>`• ${i.name} x${i.qty}`).join('<br>')}</div><div style="font-weight:800;margin-top:6px">Total: Rs.${o.total}</div><button onclick="window.open('https://wa.me/'+fixPhone('${o.customer.phone}')+'?text=Order Confirmed','_blank')" style="margin-top:6px;background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px">WhatsApp Customer</button> <button onclick="stopRing()" style="margin-top:6px;background:red;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px">Stop Ring</button></div>`).join('');}catch(e){box.innerHTML="Error loading orders";}}
 loadProducts();updateCart();
+function deleteOrder(id){
+let orders = JSON.parse(localStorage.getItem('gz_orders') || '[]');
+orders = orders.filter(o => String(o.id) !== String(id));
+localStorage.setItem('gz_orders', JSON.stringify(orders));
+location.reload();
+}
 </script>
 <button class="fab" id="fabBtn" onclick="toggleAdd()">+</button>
 </body>
