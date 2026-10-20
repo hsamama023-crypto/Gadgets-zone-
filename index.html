@@ -1,146 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GadgetZone - Pakistan</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#f85606">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GadgetZone - Daraz Style Store</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#f85606">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
-body{background:#f5f5f5;color:#222}
-header{background:#000;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.logo{font-size:20px;font-weight:700;color:#00e5c0;display:flex;align-items:center;gap:6px;cursor:pointer}
-.logo span{color:#fff}
-.search{flex:1;margin:0 10px}
-.search input{width:100%;padding:8px 12px;border-radius:20px;border:none;outline:none;background:#222;color:#fff;font-size:12px}
-.icons{display:flex;gap:12px;font-size:20px;cursor:pointer}
-#appBanner{background:#f85606;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:12px;font-weight:600}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}body{background:#f0f2f5;color:#222}
+header{background:#000;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:20px;font-weight:800;color:#00e5c0;cursor:pointer}.logo span{color:#fff}
+.search{flex:1;margin:0 10px;position:relative}.search input{width:100%;padding:9px 14px 9px 34px;border-radius:20px;border:none;background:#222;color:#fff;font-size:12px;outline:none}
+.search::before{content:'🔍';position:absolute;left:12px;top:7px;font-size:12px}
+.icons{display:flex;gap:14px;font-size:20px;cursor:pointer;align-items:center}
+#appBanner{background:linear-gradient(90deg,#f85606,#ff8a00);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:12px;font-weight:600;position:sticky;top:48px;z-index:90}
 #appBanner button{background:#fff;color:#f85606;border:none;padding:6px 14px;border-radius:20px;font-weight:800;cursor:pointer}
-.slider-wrap{height:160px;overflow:hidden;position:relative;margin:10px;border-radius:12px;background:#000}
-.slide{position:absolute;width:100%;height:100%;display:flex;align-items:center;padding:0 20px;color:#fff;opacity:0;transition:0.6s}
-.slide.active{opacity:1}
-.slide h2{font-size:18px}.slide p{font-size:11px;opacity:0.8}
-.cats{display:flex;gap:8px;overflow-x:auto;padding:10px 14px}
-.cat{background:#fff;border:1px solid #eee;padding:6px 14px;border-radius:20px;font-size:11px;white-space:nowrap;cursor:pointer}
-.cat.active{background:#000;color:#fff}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:0 10px 80px}
-.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee}
-.card-img{height:140px;background:#fafafa;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.card-img img{width:100%;height:100%;object-fit:cover}
-.card-body{padding:8px}.card-body h3{font-size:11px;height:32px;overflow:hidden}
-.price{color:#f85606;font-weight:700;font-size:13px}
-.old{font-size:10px;color:#999;text-decoration:line-through}
+.slider-wrap{height:170px;overflow:hidden;position:relative;margin:10px;border-radius:12px;background:#000}
+.slide{position:absolute;width:100%;height:100%;display:flex;align-items:center;padding:0 20px;color:#fff;opacity:0;transition:0.6s;background-size:cover}
+.slide.active{opacity:1}.slide h2{font-size:19px;line-height:1.2}.slide p{font-size:11px;opacity:0.9;margin-top:3px}.slide .btn{margin-top:8px;background:#f85606;color:#fff;padding:5px 12px;border-radius:20px;font-size:10px;display:inline-block}
+.flash{background:#fff;margin:10px;border-radius:12px;padding:10px;display:flex;justify-content:space-between;align-items:center}
+.flash h3{color:#f85606;font-size:13px}.flash #timer{font-size:11px;background:#000;color:#fff;padding:4px 8px;border-radius:6px}
+.cats{display:flex;gap:10px;overflow-x:auto;padding:10px 14px;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}
+.cat{background:#fff;border:1px solid #eee;padding:6px 14px;border-radius:20px;font-size:11px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:4px}.cat.active{background:#000;color:#fff;border-color:#000}
+.products{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:0 10px 90px}
+.card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #eee;position:relative;cursor:pointer}
+.card-img{height:150px;background:#fafafa;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card-img img{width:100%;height:100%;object-fit:cover}.badge{position:absolute;top:6px;left:6px;background:#f85606;color:#fff;font-size:8px;padding:3px 6px;border-radius:4px;font-weight:700}
+.free{position:absolute;bottom:6px;left:6px;background:#00b578;color:#fff;font-size:7px;padding:2px 5px;border-radius:3px}
+.card-body{padding:8px}.card-body h3{font-size:11px;height:32px;overflow:hidden;line-height:1.3}
+.price{color:#f85606;font-weight:700;font-size:13px;margin-top:3px}.old{font-size:10px;color:#999;text-decoration:line-through;margin-left:4px}
+.rating{font-size:9px;color:#666;margin-top:2px;display:flex;justify-content:space-between}
+.rating span:last-child{color:#999}
+.add-btn{width:100%;margin-top:6px;background:#000;color:#fff;border:none;padding:7px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer}
 @media(min-width:768px){
-  header{padding:14px 30px}.logo{font-size:26px}
-  .products{grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 30px;max-width:1400px;margin:0 auto}
-  .slider-wrap{height:300px;margin:16px 30px}
-  .card-img{height:220px}
+header{padding:14px 30px}.logo{font-size:26px}.search input{font-size:14px}
+.slider-wrap{height:320px;margin:16px 30px;max-width:1340px;margin-left:auto;margin-right:auto}
+.products{grid-template-columns:repeat(5,1fr);gap:14px;padding:20px 30px;max-width:1400px;margin:0 auto}
+.card-img{height:220px}.slide h2{font-size:28px}
 }
-#cartDrawer,#wishDrawer{position:fixed;top:0;right:-100%;width:90%;max-width:380px;height:100%;background:#fff;z-index:100;transition:0.3s;padding:14px;overflow-y:auto}
-#cartDrawer.open,#wishDrawer.open{right:0}
-#addBox{display:none;background:#111;color:#fff;padding:14px;border-radius:12px;margin:10px}
-#addBox input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#fff}
-.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:8px 0;z-index:40}
-.bottom-nav div{font-size:10px;text-align:center;cursor:pointer}
-</style>
-</head>
-<body>
+</style></head><body>
 <header>
 <div class="logo" id="logoBtn">⚡Gadget<span>Zone</span></div>
-<div class="search"><input id="searchInput" placeholder="Search earbuds, watches..."></div>
-<div class="icons"><span id="wishBtn">♡</span><span id="cartBtn">🛒 <b id="cartCount" style="font-size:11px;background:#f85606;color:#fff;border-radius:10px;padding:0 5px">0</b></span></div>
+<div class="search"><input id="searchInput" placeholder="Search in GadgetZone"></div>
+<div class="icons"><span id="wishBtn">♡ <b id="wishCount" style="font-size:10px">0</b></span><span id="cartBtn">🛒 <b id="cartCount" style="font-size:10px;background:#f85606;color:#fff;border-radius:10px;padding:1px 5px">0</b></span></div>
 </header>
-<div id="appBanner">
-<span>📱 Get GadgetZone App - 60% OFF</span>
-<div><button onclick="downloadApp()">⬇️ Download APK</button> <span onclick="closeAppBanner()" style="margin-left:10px;cursor:pointer">✕</span></div>
+<div id="appBanner"><span>📱 Get App - Extra 60% OFF + Free Delivery</span><div><button onclick="downloadApp()">⬇️ Download APK</button> <span onclick="closeAppBanner()" style="margin-left:10px;cursor:pointer">✕</span></div></div>
+<div class="slider-wrap" id="sliderWrap">
+<div class="slide active" id="slide1" style="background:linear-gradient(90deg,#0f2027,#203a43,#2c5364)"><div><h2 id="bn1TitleView">UPTO 60% OFF</h2><p id="bn1SubView">On Headphones, Smartwatches & More</p><div class="btn">Shop Now →</div></div></div>
+<div class="slide" id="slide2" style="background:linear-gradient(90deg,#ff512f,#dd2476)"><div><h2 id="bn2TitleView">FREE DELIVERY</h2><p id="bn2SubView">All Over Pakistan - 24 Hours</p><div class="btn">Order Now</div></div></div>
+<div class="slide" id="slide3" style="background:linear-gradient(90deg,#232526,#414345)"><div><h2 id="bn3TitleView">NEW ARRIVALS 2026</h2><p id="bn3SubView">Latest Gadgets - Limited Stock</p><div class="btn">Explore →</div></div></div>
 </div>
-<div class="slider-wrap">
-<div class="slide active" style="background:linear-gradient(90deg,#0f2027,#203a43)"><div><h2>UPTO 60% OFF</h2><p>On Headphones & More</p></div></div>
-<div class="slide" style="background:linear-gradient(90deg,#ff512f,#dd2476)"><div><h2>FREE DELIVERY</h2><p>All Pakistan</p></div></div>
-</div>
+<div class="flash"><h3>⚡ Flash Sale</h3><div style="display:flex;gap:6px;align-items:center"><span style="font-size:11px">Ending in</span><span id="timer">02:59:59</span></div><span style="font-size:11px;color:#f85606;font-weight:700;cursor:pointer" onclick="filterCat('All',null)">SEE MORE →</span></div>
 <div class="cats" id="cats"></div>
 <div class="products" id="products"></div>
-<div id="cartDrawer"><span style="float:right;cursor:pointer" onclick="closeCart()">✕</span><h3>🛒 My Cart</h3><div id="cartItems" style="margin-top:14px"></div><div id="cartTotal" style="font-weight:800;margin-top:10px"></div><button onclick="checkout()" style="width:100%;background:#f85606;color:#fff;padding:12px;border:none;border-radius:10px;margin-top:10px;font-weight:700">Checkout on WhatsApp</button></div>
-<div id="wishDrawer"><span style="float:right;cursor:pointer" onclick="closeWish()">✕</span><h3>♡ Wishlist</h3><div id="wishItems"></div></div>
+<!-- Product Detail Modal (Daraz jaisa) -->
+<div id="pModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:200;overflow-y:auto;padding:10px">
+<div style="background:#fff;max-width:500px;margin:20px auto;border-radius:16px;overflow:hidden;position:relative">
+<span onclick="closePModal()" style="position:absolute;top:10px;right:14px;font-size:22px;background:#000;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10">✕</span>
+<div id="pModalImg" style="height:320px;background:#fafafa"><img id="pmImg" style="width:100%;height:100%;object-fit:cover"></div>
+<div style="padding:14px">
+<h2 id="pmName" style="font-size:16px"></h2>
+<div style="margin-top:6px"><span id="pmPrice" style="color:#f85606;font-size:20px;font-weight:800"></span><span id="pmOld" style="color:#999;text-decoration:line-through;font-size:12px;margin-left:6px"></span><span id="pmOff" style="background:#ffe9e0;color:#f85606;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px"></span></div>
+<div id="pmRating" style="font-size:11px;color:#666;margin-top:6px"></div>
+<div style="margin-top:10px;background:#fff7f0;padding:8px;border-radius:8px;font-size:11px"><b>🚚 Free Delivery</b> - Karachi, Lahore, Islamabad & All Pakistan<br><b>💰 Cash on Delivery</b> Available<br><b>↩️ 7 Days Return</b></div>
+<div style="display:flex;gap:8px;margin-top:12px"><button id="pmCartBtn" style="flex:1;background:#f85606;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700">🛒 Add to Cart</button><button onclick="buyNow()" style="flex:1;background:#000;color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700">Buy Now</button></div>
+<button onclick="toggleWishModal()" style="width:100%;margin-top:8px;background:#fff;border:1px solid #eee;padding:10px;border-radius:10px;font-size:12px">♡ Add to Wishlist</button>
+</div></div></div>
 
-<div id="addBox">
-<h3>🔓 Admin Panel</h3>
-<input id="ownerNumber" placeholder="WhatsApp 923...">
-<input id="appLink" value="https://github.com/hsamama023-crypto/Gadgets-zone-/raw/main/GadgetZone.apk">
-<input id="pName" placeholder="Product Name">
-<div style="display:flex;gap:6px"><input id="pPrice" type="number" placeholder="New Price"><input id="pOldPrice" type="number" placeholder="Old Price 9750"></div>
-<input id="pCat" placeholder="Category Earbuds, Watch">
-<input type="file" id="pFile" accept="image/*" multiple>
-<div id="pv" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0"></div>
-<button onclick="saveProduct()" id="saveBtn" style="background:#f85606;color:#fff;width:100%;padding:10px;border:none;border-radius:8px;font-weight:700">✅ Save & Make LIVE</button>
-<button onclick="saveSettings()" style="background:#222;color:#fff;border:1px solid #444;width:100%;padding:10px;border-radius:8px;margin-top:6px">💾 Save WhatsApp + App Link</button>
-<p style="font-size:10px;margin-top:8px;color:#aaa">App Link me APK ka link already dala hua hai - Save dabao bas.</p>
+<!-- Cart Drawer -->
+<div id="cartDrawer"><span onclick="closeCart()" style="float:right;font-size:22px;cursor:pointer">✕</span><h3>🛒 My Cart (<span id="cartCount2">0</span>)</h3>
+<div id="cartItems" style="margin-top:14px"></div>
+<div style="margin-top:12px;background:#f9f9f9;padding:10px;border-radius:10px">
+<div style="display:flex;justify-content:space-between;font-size:12px"><span>Subtotal</span><span id="subTotal">Rs.0</span></div>
+<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px"><span>Delivery</span><span style="color:#00b578">FREE</span></div>
+<div id="cartTotal" style="font-weight:800;margin-top:8px;font-size:16px;border-top:1px dashed #ddd;padding-top:8px"></div></div>
+<input id="custName" placeholder="Your Name" style="width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #ddd">
+<input id="custAddr" placeholder="Full Address" style="width:100%;padding:10px;margin-top:6px;border-radius:8px;border:1px solid #ddd">
+<button onclick="checkout()" style="width:100%;background:#f85606;color:#fff;padding:14px;border:none;border-radius:10px;margin-top:10px;font-weight:800;font-size:14px">✅ Checkout on WhatsApp</button>
 </div>
 
-<div class="bottom-nav"><div onclick="window.scrollTo(0,0)">🏠<br>Home</div><div onclick="document.getElementById('cats').scrollIntoView()">📦<br>Categories</div><div id="bottomCart">🛒<br>Cart</div><div onclick="openWish()">♡<br>Wishlist</div><div onclick="document.getElementById('logoBtn').click()">👤<br>Admin</div></div>
+<!-- Wishlist Drawer -->
+<div id="wishDrawer" style="position:fixed;top:0;right:-100%;width:90%;max-width:380px;height:100%;background:#fff;z-index:110;transition:0.3s;padding:14px;overflow-y:auto;box-shadow:-2px 0 10px rgba(0,0,0,0.2)"><span onclick="closeWish()" style="float:right;font-size:22px;cursor:pointer">✕</span><h3>♡ Wishlist</h3><div id="wishItems" style="margin-top:14px"></div></div>
+
+<!-- Admin Panel - Full Daraz Functions -->
+<div id="addBox">
+<h3>🔓 Admin Panel (gadgets 0827)</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<input id="ownerNumber" placeholder="WhatsApp 923..."><input id="appLink" value="https://raw.githubusercontent.com/hsamama023-crypto/Gadgets-zone-/main/GadgetZone.apk">
+</div>
+<h4 style="margin-top:10px;font-size:12px">📦 Add Product (Daraz Style)</h4>
+<input id="pName" placeholder="Product Name (e.g. M10 TWS Earbuds 3500mAh)">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+<input id="pPrice" type="number" placeholder="Price 1499"><input id="pOldPrice" type="number" placeholder="Old Price 9750"><input id="pSold" type="number" placeholder="Sold 1250">
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+<input id="pCat" placeholder="Category"><input id="pRating" placeholder="Rating 4.8"><input id="pReviews" placeholder="Reviews 234">
+</div>
+<input type="file" id="pFile" accept="image/*" multiple>
+<div id="pv" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0"></div>
+<div style="display:flex;gap:6px"><button onclick="saveProduct()" style="flex:1;background:#f85606;color:#fff;padding:10px;border:none;border-radius:8px;font-weight:700">✅ Add Product LIVE</button><button onclick="clearForm()" style="background:#333;color:#fff;padding:10px;border:none;border-radius:8px">Clear</button></div>
+
+<h4 style="margin-top:12px;font-size:12px">🎨 Edit Banners (Slider)</h4>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<input id="bn1Title" placeholder="Banner1 Title"><input id="bn1Sub" placeholder="Banner1 Subtitle">
+<input id="bn2Title" placeholder="Banner2 Title"><input id="bn2Sub" placeholder="Banner2 Subtitle">
+<input id="bn3Title" placeholder="Banner3 Title"><input id="bn3Sub" placeholder="Banner3 Subtitle">
+</div>
+<button onclick="saveSettings()" style="width:100%;background:#00b578;color:#fff;padding:10px;border:none;border-radius:8px;margin-top:8px;font-weight:700">💾 Save Banners + WhatsApp + APK Link</button>
+
+<h4 style="margin-top:12px;font-size:12px">📋 Manage Products</h4>
+<div id="adminList" style="max-height:200px;overflow-y:auto;background:#1a1a1a;border-radius:8px;padding:8px;margin-top:6px"></div>
+<button onclick="exportProducts()" style="width:100%;background:#222;color:#fff;border:1px solid #444;padding:8px;border-radius:8px;margin-top:6px;font-size:11px">📤 Export products.json for GitHub</button>
+</div>
+
+<div class="bottom-nav"><div onclick="window.scrollTo(0,0)">🏠<br>Home</div><div onclick="document.getElementById('cats').scrollIntoView()">📦<br>Categories</div><div onclick="window.scrollTo(0,document.body.scrollHeight)">🔥<br>Flash</div><div id="bottomCart">🛒<br>Cart</div><div onclick="document.getElementById('logoBtn').click()">👤<br>Admin</div></div>
 <script>
 let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');
 let cart=JSON.parse(localStorage.getItem('gz_cart')||'[]');
-let deferredPrompt=null; let tapCount=0;
-const DEFAULT_APK = "https://github.com/hsamama023-crypto/Gadgets-zone-/raw/main/GadgetZone.apk";
+let wish=JSON.parse(localStorage.getItem('gz_wish')||'[]');
+let tapCount=0, currentP=null, currentCat='All';
+const DIRECT_APK="https://raw.githubusercontent.com/hsamama023-crypto/Gadgets-zone-/main/GadgetZone.apk";
 
-// ===== DOWNLOAD FIX - NO POPUP =====
+// DIRECT APK OPEN - FIXED
 function downloadApp(){
-  let link = localStorage.getItem('gz_appLink') || DEFAULT_APK;
-  if(!link || link.trim()=="") link = DEFAULT_APK;
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});
-    return;
-  }
-  // direct download
-  let a=document.createElement('a');
-  a.href=link; a.target="_blank"; a.download="GadgetZone.apk";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>{ window.open(link,'_blank'); },300);
+  let link=localStorage.getItem('gz_appLink')||DIRECT_APK;
+  if(!link) link=DIRECT_APK;
+  window.location.href=link;
   closeAppBanner();
 }
-function closeAppBanner(){
-  let b=document.getElementById('appBanner'); if(b) b.style.display='none';
-  localStorage.setItem('appBannerClosed','1');
-}
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-if(localStorage.getItem('appBannerClosed')=='1') document.getElementById('appBanner').style.display='none';
+function closeAppBanner(){let b=document.getElementById('appBanner');if(b)b.style.display='none';localStorage.setItem('appBannerClosed','1');}
+if(localStorage.getItem('appBannerClosed')=='1'){let b=document.getElementById('appBanner');if(b)b.style.display='none';}
 
-// Products
-function renderCats(){
-  let cats=['All',...new Set(gadgets.map(g=>g.cat))];
-  document.getElementById('cats').innerHTML=cats.map(c=>`<div class="cat ${c=='All'?'active':''}" onclick="filterCat('${c}',this)">${c}</div>`).join('');
-}
-let currentCat='All';
+// Flash Sale Timer (Daraz style)
+let time=10800;setInterval(()=>{time--;if(time<0)time=10800;let h=Math.floor(time/3600),m=Math.floor((time%3600)/60),s=time%60;document.getElementById('timer').innerText=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;},1000);
+
+// Slider Auto
+let sIdx=0;setInterval(()=>{let slides=document.querySelectorAll('.slide');slides.forEach(s=>s.classList.remove('active'));sIdx=(sIdx+1)%slides.length;slides[sIdx].classList.add('active');},3500);
+
+// Render Cats
+function renderCats(){let cats=['All',...new Set(gadgets.map(g=>g.cat).filter(Boolean))];document.getElementById('cats').innerHTML=cats.map(c=>`<div class="cat ${c==currentCat?'active':''}" onclick="filterCat('${c}',this)">📦 ${c}</div>`).join('');}
 function filterCat(c,el){currentCat=c;document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderProducts();}
+
+// Render Products - Daraz Card
 function renderProducts(){
   let q=document.getElementById('searchInput').value.toLowerCase();
   let list=gadgets.filter(g=>(currentCat=='All'||g.cat==currentCat)&&g.name.toLowerCase().includes(q));
-  document.getElementById('products').innerHTML=list.map((g,i)=>`
-  <div class="card"><div class="card-img"><img src="${g.img||g.imgs?.[0]||''}"></div>
-  <div class="card-body"><h3>${g.name}</h3><div class="price">Rs. ${g.price} <span class="old">Rs.${g.oldPrice||'9750'}</span></div>
-  <button onclick="addToCart(${i})" style="width:100%;margin-top:6px;background:#000;color:#fff;border:none;padding:6px;border-radius:6px;font-size:11px">Add to Cart</button></div></div>`).join('')||'<p style="padding:20px">No Products</p>';
+  document.getElementById('products').innerHTML=list.map((g,i)=>{
+    let off=Math.round((1-g.price/(g.oldPrice||9750))*100);
+    return `<div class="card" onclick="openPModal(${gadgets.indexOf(g)})"><div class="card-img"><img src="${g.img||g.imgs?.[0]||''}" loading="lazy"><div class="badge">-${off}%</div><div class="free">✓ Free Delivery</div></div>
+    <div class="card-body"><h3>${g.name}</h3><div class="price">Rs.${g.price}<span class="old">Rs.${g.oldPrice||9750}</span></div>
+    <div class="rating"><span>⭐ ${g.rating||'4.8'} (${g.reviews||'234'})</span><span>${g.sold||'1.2k'} sold</span></div>
+    <button class="add-btn" onclick="event.stopPropagation();addToCart(${gadgets.indexOf(g)})">Add to Cart</button></div></div>`;
+  }).join('')||'<p style="grid-column:1/-1;padding:30px;text-align:center">No Products - Admin se add karo</p>';
+  renderAdminList();
 }
-function addToCart(i){cart.push(gadgets[i]);localStorage.setItem('gz_cart',JSON.stringify(cart));updateCartCount();alert('Added');}
-function updateCartCount(){document.getElementById('cartCount').innerText=cart.length;}
-function openCart(){document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartItems').innerHTML=cart.map((c,i)=>`<div style="border-bottom:1px solid #eee;padding:8px 0">${c.name} - Rs.${c.price} <span onclick="cart.splice(${i},1);localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();updateCartCount()" style="color:red;cursor:pointer"> Remove</span></div>`).join('');let t=cart.reduce((s,c)=>s+parseInt(c.price||0),0);document.getElementById('cartTotal').innerText='Total: Rs.'+t;}
+
+// Product Modal (Daraz)
+function openPModal(idx){currentP=gadgets[idx];document.getElementById('pmImg').src=currentP.img||currentP.imgs?.[0];document.getElementById('pmName').innerText=currentP.name;document.getElementById('pmPrice').innerText='Rs.'+currentP.price;document.getElementById('pmOld').innerText='Rs.'+(currentP.oldPrice||9750);let off=Math.round((1-currentP.price/(currentP.oldPrice||9750))*100);document.getElementById('pmOff').innerText='-'+off+'%';document.getElementById('pmRating').innerText=`⭐ ${currentP.rating||'4.8'} (${currentP.reviews||'234'} Ratings) • ${currentP.sold||'1250'} Sold • Free Delivery`;document.getElementById('pModal').style.display='block';document.getElementById('pmCartBtn').onclick=()=>{addToCart(idx);closePModal();};}
+function closePModal(){document.getElementById('pModal').style.display='none';}
+function buyNow(){if(!currentP)return;cart=[currentP];localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();closePModal();}
+function toggleWishModal(){if(!currentP)return;let ex=wish.find(w=>w.name==currentP.name);if(ex){wish=wish.filter(w=>w.name!=currentP.name);alert('Removed from Wishlist');}else{wish.push(currentP);alert('Added to Wishlist');}localStorage.setItem('gz_wish',JSON.stringify(wish));updateCounts();renderWish();}
+
+// Cart Functions with Qty (Daraz)
+function addToCart(idx){let g=gadgets[idx];let ex=cart.find(c=>c.name==g.name);if(ex){ex.qty=(ex.qty||1)+1;}else{g.qty=1;cart.push({...g});}localStorage.setItem('gz_cart',JSON.stringify(cart));updateCounts();openCart();}
+function updateCounts(){document.getElementById('cartCount').innerText=cart.reduce((s,c)=>s+(c.qty||1),0);document.getElementById('cartCount2').innerText=cart.reduce((s,c)=>s+(c.qty||1),0);document.getElementById('wishCount').innerText=wish.length;}
+function openCart(){document.getElementById('cartDrawer').classList.add('open');document.getElementById('cartItems').innerHTML=cart.map((c,i)=>`<div style="display:flex;gap:8px;padding:10px 0;border-bottom:1px solid #eee;align-items:center"><img src="${c.img||c.imgs?.[0]}" style="width:50px;height:50px;border-radius:8px;object-fit:cover"><div style="flex:1"><div style="font-size:12px;font-weight:600">${c.name}</div><div style="font-size:12px;color:#f85606">Rs.${c.price} x ${c.qty||1}</div><div style="display:flex;gap:6px;margin-top:4px"><button onclick="changeQty(${i},-1)" style="width:24px;height:24px;border:1px solid #ddd;border-radius:4px">-</button><span style="font-size:12px">${c.qty||1}</span><button onclick="changeQty(${i},1)" style="width:24px;height:24px;border:1px solid #ddd;border-radius:4px">+</button><span onclick="removeCart(${i})" style="margin-left:10px;color:red;font-size:11px;cursor:pointer">Remove</span></div></div></div>`).join('')||'Cart empty';let total=cart.reduce((s,c)=>s+(parseInt(c.price||0)*(c.qty||1)),0);document.getElementById('subTotal').innerText='Rs.'+total;document.getElementById('cartTotal').innerText='Total: Rs.'+total+' (Free Delivery)';}
+function changeQty(i,d){cart[i].qty=(cart[i].qty||1)+d;if(cart[i].qty<=0)cart.splice(i,1);localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();updateCounts();}
+function removeCart(i){cart.splice(i,1);localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();updateCounts();}
 function closeCart(){document.getElementById('cartDrawer').classList.remove('open');}
-function openWish(){document.getElementById('wishDrawer').classList.add('open');}
-function closeWish(){document.getElementById('wishDrawer').classList.remove('open');}
-function checkout(){let wa=localStorage.getItem('ownerWA')||'923000000000';let t=cart.reduce((s,c)=>s+parseInt(c.price||0),0);let msg=`*New Order*%0A`+cart.map(c=>`• ${c.name} Rs.${c.price}`).join('%0A')+`%0ATotal: Rs.${t}`;window.open(`https://wa.me/${wa}?text=${msg}`,'_blank');}
+function openWish(){document.getElementById('wishDrawer').style.right='0';renderWish();}
+function closeWish(){document.getElementById('wishDrawer').style.right='-100%';}
+function renderWish(){document.getElementById('wishItems').innerHTML=wish.map((c,i)=>`<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid #eee"><img src="${c.img}" style="width:50px;height:50px;border-radius:8px"><div style="flex:1"><div style="font-size:12px">${c.name}</div><div style="color:#f85606;font-size:12px">Rs.${c.price}</div><button onclick="addToCart(${gadgets.indexOf(wish[i])});" style="font-size:10px;margin-top:4px;background:#000;color:#fff;border:none;padding:4px 8px;border-radius:4px">Add to Cart</button> <span onclick="wish.splice(${i},1);localStorage.setItem('gz_wish',JSON.stringify(wish));renderWish();updateCounts()" style="color:red;font-size:10px;cursor:pointer;margin-left:6px">Remove</span></div></div>`).join('')||'No wishlist items';}
+function checkout(){
+  let wa=localStorage.getItem('ownerWA')||'923000000000';
+  let name=document.getElementById('custName').value||'Customer', addr=document.getElementById('custAddr').value||'';
+  let total=cart.reduce((s,c)=>s+(parseInt(c.price||0)*(c.qty||1)),0);
+  let items=cart.map(c=>`• ${c.name} x${c.qty||1} = Rs.${c.price*(c.qty||1)}`).join('%0A');
+  let msg=`*🔥 NEW ORDER - GadgetZone*%0A%0A👤 Name: ${name}%0A📍 Address: ${addr}%0A%0A${items}%0A%0A💰 Total: Rs.${total}%0A🚚 Delivery: FREE%0A💵 Payment: Cash on Delivery`;
+  window.open(`https://wa.me/${wa}?text=${msg}`,'_blank');
+}
+
+// Search + Admin Login
 document.getElementById('searchInput').addEventListener('input',renderProducts);
 document.getElementById('cartBtn').onclick=openCart;document.getElementById('bottomCart').onclick=openCart;document.getElementById('wishBtn').onclick=openWish;
-document.getElementById('logoBtn').addEventListener('click',()=>{tapCount++;setTimeout(()=>tapCount=0,800);if(tapCount>=2){let p=prompt('Password:');if(p=='gadgets 0827'){document.getElementById('addBox').style.display='block';loadAdmin();}tapCount=0;}});
+document.getElementById('logoBtn').addEventListener('click',()=>{tapCount++;setTimeout(()=>tapCount=0,1000);if(tapCount>=2){let p=prompt('Admin Password:');if(p=='gadgets 0827'){document.getElementById('addBox').style.display='block';loadAdmin();}tapCount=0;}});
+
+// Image Compress
 let imgDatas=[];
 function compressImage(f){return new Promise(res=>{let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=1000;let w=img.width,h=img.height;if(w>h){if(w>max){h*=max/w;w=max;}}else{if(h>max){w*=max/h;h=max;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',0.78));};img.src=e.target.result;};r.readAsDataURL(f);});}
-document.getElementById('pFile').addEventListener('change',async e=>{let files=[...e.target.files].slice(0,5);imgDatas=[];document.getElementById('pv').innerHTML='⏳...';for(let f of files){let d=await compressImage(f);imgDatas.push(d);}document.getElementById('pv').innerHTML=imgDatas.map(d=>`<img src="${d}" style="width:50px;height:50px;object-fit:cover;border-radius:6px">`).join('');});
-function loadAdmin(){let o=localStorage.getItem('ownerWA');let a=localStorage.getItem('gz_appLink')||DEFAULT_APK;if(o)document.getElementById('ownerNumber').value=o;document.getElementById('appLink').value=a;}
-function saveSettings(){let o=document.getElementById('ownerNumber').value;let a=document.getElementById('appLink').value||DEFAULT_APK;if(o)localStorage.setItem('ownerWA',o);localStorage.setItem('gz_appLink',a);alert('✅ Saved! Ab APK download hoga');}
-async function saveProduct(){let n=document.getElementById('pName').value,pr=document.getElementById('pPrice').value,oldPr=document.getElementById('pOldPrice').value||'9750',ct=document.getElementById('pCat').value||'Gadgets';if(!n||!pr||imgDatas.length==0){alert('Name Price Photo bharo');return;}gadgets.unshift({name:n,price:pr,oldPrice:oldPr,cat:ct,rating:'4.5',reviews:'120',imgs:imgDatas,img:imgDatas[0]});localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();alert('✅ LIVE!');}
-fetch('products.json').then(r=>r.json()).then(j=>{if(j.length>gadgets.length){gadgets=j;localStorage.setItem('myGadgets',JSON.stringify(j));}renderCats();renderProducts();updateCartCount();}).catch(()=>{renderCats();renderProducts();updateCartCount();});
-</script>
-</body>
-</html>
+document.getElementById('pFile').addEventListener('change',async e=>{let files=[...e.target.files].slice(0,5);imgDatas=[];document.getElementById('pv').innerHTML='⏳ Compressing...';for(let f of files){imgDatas.push(await compressImage(f));}document.getElementById('pv').innerHTML=imgDatas.map(d=>`<img src="${d}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #333">`).join('');});
+
+// Admin Functions
+function loadAdmin(){
+  document.getElementById('ownerNumber').value=localStorage.getItem('ownerWA')||'';
+  document.getElementById('appLink').value=localStorage.getItem('gz_appLink')||DIRECT_APK;
+  document.getElementById('bn1Title').value=localStorage.getItem('bn1Title')||'UPTO 60% OFF';
+  document.getElementById('bn1Sub').value=localStorage.getItem('bn1Sub')||'On Headphones, Smartwatches & More';
+  document.getElementById('bn2Title').value=localStorage.getItem('bn2Title')||'FREE DELIVERY';
+  document.getElementById('bn2Sub').value=localStorage.getItem('bn2Sub')||'All Over Pakistan';
+  document.getElementById('bn3Title').value=localStorage.getItem('bn3Title')||'NEW ARRIVALS 2026';
+  document.getElementById('bn3Sub').value=localStorage.getItem('bn3Sub')||'Latest Gadgets';
+}
+function saveSettings(){
+  localStorage.setItem('ownerWA',document.getElementById('ownerNumber').value);
+  localStorage.setItem('gz_appLink',document.getElementById('appLink').value||DIRECT_APK);
+  localStorage.setItem('bn1Title',document.getElementById('bn1Title').value);localStorage.setItem('bn1Sub',document.getElementById('bn1Sub').value);
+  localStorage.setItem('bn2Title',document.getElementById('bn2Title').value);localStorage.setItem('bn2Sub',document.getElementById('bn2Sub').value);
+  localStorage.setItem('bn3Title',document.getElementById('bn3Title').value);localStorage.setItem('bn3Sub',document.getElementById('bn3Sub').value);
+  document.getElementById('bn1TitleView').innerText=document.getElementById('bn1Title').value;
+  document.getElementById('bn1SubView').innerText=document.getElementById('bn1Sub').value;
+  document.getElementById('bn2TitleView').innerText=document.getElementById('bn2Title').value;
+  document.getElementById('bn2SubView').innerText=document.getElementById('bn2Sub').value;
+  document.getElementById('bn3TitleView').innerText=document.getElementById('bn3Title').value;
+  document.getElementById('bn3SubView').innerText=document.getElementById('bn3Sub').value;
+  alert('✅ All Saved! Banners + WhatsApp + APK Link Updated');
+}
+function saveProduct(){
+  let n=document.getElementById('pName').value, pr=document.getElementById('pPrice').value, oldPr=document.getElementById('pOldPrice').value||'9750', cat=document.getElementById('pCat').value||'Gadgets', rating=document.getElementById('pRating').value||'4.8', rev=document.getElementById('pReviews').value||'234', sold=document.getElementById('pSold').value||'1250';
+  if(!n||!pr||imgDatas.length==0){alert('Name, Price, Photo bharo');return;}
+  gadgets.unshift({name:n,price:pr,oldPrice:oldPr,cat:cat,rating:rating,reviews:rev,sold:sold,img:imgDatas[0],imgs:imgDatas});
+  localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();clearForm();alert('✅ Product LIVE - Daraz Style!');
+}
+function clearForm(){document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pOldPrice').value='';document.getElementById('pCat').value='';document.getElementById('pv').innerHTML='';imgDatas=[];}
+function renderAdminList(){document.getElementById('adminList').innerHTML=gadgets.map((g,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333;font-size:11px"><span>📦 ${g.name.substring(0,25)} - Rs.${g.price}</span><span><b onclick="deleteProd(${i})" style="color:red;cursor:pointer;margin-left:8px">DELETE</b></span></div>`).join('')||'No products';}
+function deleteProd(i){if(confirm('Delete this product?')){gadgets.splice(i,1);localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();}}
+function exportProducts(){let data=JSON.stringify(gadgets,null,2);let blob=new Blob([data],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='products.json';a.click();alert('products.json downloaded - GitHub pe upload kardo');}
+
+// Init
+fetch('products.json').then(r=>r.json()).then(j=>{if(j.length>0){let local=JSON.parse(localStorage.getItem('myGadgets')||'[]');if(j.length>=local.length){gadgets=j;localStorage.setItem('myGadgets',JSON.stringify(j));}}renderCats();renderProducts();updateCounts();if(localStorage.getItem('bn1Title')){document.getElementById('bn1TitleView').innerText=localStorage.getItem('bn1Title');document.getElementById('bn1SubView').innerText=localStorage.getItem('bn1Sub');document.getElementById('bn2TitleView').innerText=localStorage.getItem('bn2Title');document.getElementById('bn2SubView').innerText=localStorage.getItem('bn2Sub');document.getElementById('bn3TitleView').innerText=localStorage.getItem('bn3Title');document.getElementById('bn3SubView').innerText=localStorage.getItem('bn3Sub');}}).catch(()=>{renderCats();renderProducts();updateCounts();});
+</script></body></html>
