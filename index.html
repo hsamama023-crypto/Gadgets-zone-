@@ -21,6 +21,8 @@ header{background:#000;color:#fff;padding:10px 14px;display:flex;justify-content
 .free{position:absolute;bottom:6px;left:6px;background:#00b578;color:#fff;font-size:7px;padding:2px 5px;border-radius:3px}
 .card-body{padding:8px}.card-body h3{font-size:11px;height:32px;overflow:hidden}.price{color:#f85606;font-weight:700;font-size:13px}.old{font-size:10px;color:#999;text-decoration:line-through;margin-left:4px}
 .rating{font-size:9px;color:#666;margin-top:2px;display:flex;justify-content:space-between}
+#addBox input, #addBox textarea{background:#222;color:#fff;border:1px solid #444;padding:10px;border-radius:8px;width:100%;margin:4px 0;font-size:12px}
+#addBox input[readonly]{background:#0f281f !important;color:#00ff88 !important;border-color:#00ff88 !important}
 @media(min-width:768px){.products{grid-template-columns:repeat(5,1fr);padding:20px 30px}.card-img{height:220px}.slider-wrap{height:300px;margin:16px 30px}}
 </style></head><body>
 <header><div class="logo" id="logoBtn">⚡Gadget<span>Zone</span></div>
@@ -39,62 +41,51 @@ header{background:#000;color:#fff;padding:10px 14px;display:flex;justify-content
 <input id="custPhone" type="tel" placeholder="Aapka WhatsApp Number 03xxxxxxxxx" style="width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;margin-bottom:8px">
 <input id="custAddr" placeholder="Full Address - City, Area" style="width:100%;padding:12px;border-radius:8px;border:1px solid #ddd">
 </div>
-
 <button onclick="checkout()" style="width:100%;background:#f85606;color:#fff;padding:14px;border:none;border-radius:10px;margin-top:12px;font-weight:800;font-size:14px">✅ Order Confirm - WhatsApp Admin</button>
-<p style="font-size:10px;color:#888;text-align:center;margin-top:8px">Order aapke admin number 923256400449 par jayega</p>
+<p style="font-size:10px;color:#888;text-align:center;margin-top:8px">Order admin 923256400449 par jayega - Cart auto clear hoga</p>
 </div>
 
-<div id="wishDrawer" style="position:fixed;top:0;right:-100%;width:90%;max-width:380px;height:100%;background:#fff;z-index:110;transition:0.3s;padding:14px"><span onclick="closeWish()" style="float:right;font-size:22px;cursor:pointer">✕</span><h3>♡ Wishlist</h3><div id="wishItems"></div></div>
-
-<!-- HIDDEN ADMIN - Fixed Number 923256400449 -->
 <div id="addBox" style="display:none;background:#111;color:#fff;padding:14px;border-radius:12px;position:fixed;top:40px;left:3%;width:94%;z-index:9999;max-height:92vh;overflow-y:auto;border:2px solid #f85606">
-<div style="display:flex;justify-content:space-between"><h3>🔓 Admin Panel</h3><span onclick="document.getElementById('addBox').style.display='none'" style="font-size:22px;cursor:pointer;background:#fff;color:#000;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center">✕</span></div>
-
+<div style="display:flex;justify-content:space-between"><h3>🔓 Admin Panel - Secured</h3><span onclick="document.getElementById('addBox').style.display='none'" style="font-size:22px;cursor:pointer;background:#fff;color:#000;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center">✕</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
-<input id="ownerNumber" value="923256400449" placeholder="Admin WhatsApp 923256400449" style="background:#1e1e1e;color:#00ff88;border:1px solid #00ff88">
+<input id="ownerNumber" value="923256400449" readonly>
 <input id="appLink" value="https://raw.githubusercontent.com/hsamama023-crypto/Gadgets-zone-/main/GadgetZone.apk">
 </div>
-<p style="font-size:10px;color:#00ff88;margin-top:4px">✅ Admin Number Fixed: 923256400449 - Customer ka order idhar ayega</p>
-
-<h4 style="margin-top:10px;font-size:12px;color:#f85606">📦 Add Product - Rating Khud Likho</h4>
+<p style="font-size:10px;color:#00ff88;margin-top:4px">✅ Fixed Admin: 923256400449 (Locked - Change Nahi Hoga)</p>
+<h4 style="margin-top:10px;font-size:12px;color:#f85606">📦 Add Product</h4>
 <input id="pName" placeholder="Product Name"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
 <input id="pPrice" type="number" placeholder="Price"><input id="pOldPrice" type="number" placeholder="Old 9750"><input id="pSold" type="number" placeholder="Sold"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
 <input id="pCat" placeholder="Category"><input id="pRating" placeholder="Rating 4.8"><input id="pReviews" placeholder="Reviews"></div>
 <input type="file" id="pFile" accept="image/*" multiple><div id="pv" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0"></div>
 <div style="display:flex;gap:6px"><button onclick="saveProduct()" style="flex:1;background:#f85606;color:#fff;padding:12px;border:none;border-radius:8px;font-weight:700">✅ Add LIVE</button><button onclick="clearForm()" style="background:#333;color:#fff;padding:10px 14px;border:none;border-radius:8px">Clear</button></div>
-
-<h4 style="margin-top:14px;font-size:12px;color:#00e5c0">⏰ Flash Timing Change</h4>
+<h4 style="margin-top:14px;font-size:12px;color:#00e5c0">⏰ Flash Timing</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;background:#1e1e1e;padding:8px;border-radius:8px">
 <input id="flashH" type="number" placeholder="Hours"><input id="flashM" type="number" placeholder="Min"><input id="flashS" type="number" placeholder="Sec"></div>
-
 <h4 style="margin-top:12px;font-size:12px">🎨 Banners</h4>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="bn1Title" placeholder="Banner1 Title"><input id="bn1Sub" placeholder="Banner1 Sub"><input id="bn2Title" placeholder="Banner2 Title"><input id="bn2Sub" placeholder="Banner2 Sub"><input id="bn3Title" placeholder="Banner3 Title"><input id="bn3Sub" placeholder="Banner3 Sub"></div>
-
-<button onclick="saveSettings()" style="width:100%;background:#00b578;color:#fff;padding:12px;border:none;border-radius:8px;margin-top:10px;font-weight:800">💾 SAVE ALL - Timing + Banners + Admin No + APK</button>
+<button onclick="saveSettings()" style="width:100%;background:#00b578;color:#fff;padding:12px;border:none;border-radius:8px;margin-top:10px;font-weight:800">💾 SAVE ALL</button>
 <h4 style="margin-top:12px;font-size:12px">📋 Manage</h4><div id="adminList" style="max-height:180px;overflow-y:auto;background:#1a1a1a;border-radius:8px;padding:8px;margin-top:6px"></div>
-<button onclick="exportProducts()" style="width:100%;background:#222;color:#fff;border:1px solid #444;padding:8px;border-radius:8px;margin-top:6px;font-size:11px">📤 Export products.json</button>
 </div>
-<div class="bottom-nav" style="position:fixed;bottom:0;left:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #eee;z-index:40"><div onclick="window.scrollTo(0,0)" style="text-align:center;font-size:10px">🏠<br>Home</div><div onclick="document.getElementById('cats').scrollIntoView()" style="text-align:center;font-size:10px">📦<br>Cat</div><div id="bottomCart" style="text-align:center;font-size:10px">🛒<br>Cart</div><div onclick="document.getElementById('logoBtn').click()" style="text-align:center;font-size:10px">👤<br>Admin</div></div>
+<div class="bottom-nav" style="position:fixed;bottom:0;left:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #eee;z-index:40"><div onclick="window.scrollTo(0,0)" style="text-align:center;font-size:10px">🏠<br>Home</div><div onclick="document.getElementById('cats').scrollIntoView()" style="text-align:center;font-size:10px">📦<br>Cat</div><div id="bottomCart" style="text-align:center;font-size:10px">🛒<br>Cart</div><div style="text-align:center;font-size:10px">👤<br>Admin</div></div>
 <script>
-let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');
-let cart=JSON.parse(localStorage.getItem('gz_cart')||'[]');
-let wish=JSON.parse(localStorage.getItem('gz_wish')||'[]');
-let tapCount=0, currentP=null, currentCat='All', timeLeft=10800, timerInterval=null;
 const ADMIN_WA="923256400449";
 const DIRECT_APK="https://raw.githubusercontent.com/hsamama023-crypto/Gadgets-zone-/main/GadgetZone.apk";
-if(!localStorage.getItem('ownerWA')){localStorage.setItem('ownerWA',ADMIN_WA);}
+const MAX_ATTEMPTS=3, LOCK_TIME=5*60*1000;
+let gadgets=JSON.parse(localStorage.getItem('myGadgets')||'[]');
+let cart=JSON.parse(localStorage.getItem('gz_cart')||'[]');
+let tapCount=0, currentP=null, currentCat='All', timeLeft=10800, timerInterval=null;
 
-// 1. DIRECT APK DOWNLOAD
-function downloadApp(){
-  let link=localStorage.getItem('gz_appLink')||DIRECT_APK;
-  window.location.href=link;
-  closeAppBanner();
-}
+function sanitize(str){ if(!str) return ''; return str.replace(/[<>"'`]/g,'').trim().substring(0,120); }
+function escHtml(str){ let div=document.createElement('div'); div.innerText=str; return div.innerHTML; }
+function isLocked(){ let lock=localStorage.getItem('adminLock'); if(!lock) return false; if(Date.now()-parseInt(lock)<LOCK_TIME){return true;} localStorage.removeItem('adminLock'); localStorage.removeItem('adminAttempts'); return false; }
+function validPhone(p){ let c=p.replace(/[^0-9]/g,''); return c.length>=10 && c.length<=13; }
+function canCheckout(){ let last=localStorage.getItem('lastOrder'); if(!last) return true; return Date.now()-parseInt(last)>30000; }
+
+if(!localStorage.getItem('ownerWA')){localStorage.setItem('ownerWA',ADMIN_WA);}
+function downloadApp(){ let link=localStorage.getItem('gz_appLink')||DIRECT_APK; window.location.href=link; closeAppBanner(); }
 function closeAppBanner(){let b=document.getElementById('appBanner');if(b)b.style.display='none';localStorage.setItem('appBannerClosed','1');}
 if(localStorage.getItem('appBannerClosed')=='1'){let b=document.getElementById('appBanner');if(b)b.style.display='none';}
-
-// 2. Flash Timer Changeable
 function startFlashTimer(){
   let h=localStorage.getItem('flashH')||2,m=localStorage.getItem('flashM')||59,s=localStorage.getItem('flashS')||59;
   timeLeft=parseInt(h)*3600+parseInt(m)*60+parseInt(s);
@@ -102,20 +93,20 @@ function startFlashTimer(){
   timerInterval=setInterval(()=>{
     timeLeft--; if(timeLeft<0){let hh=localStorage.getItem('flashH')||2, mm=localStorage.getItem('flashM')||59, ss=localStorage.getItem('flashS')||59; timeLeft=parseInt(hh)*3600+parseInt(mm)*60+parseInt(ss);}
     let hh=Math.floor(timeLeft/3600), mm=Math.floor((timeLeft%3600)/60), ss=timeLeft%60;
-    document.getElementById('timer').innerText=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+    let t=document.getElementById('timer'); if(t) t.innerText=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
   },1000);
 }
-let sIdx=0;setInterval(()=>{let slides=document.querySelectorAll('.slide');slides.forEach(s=>s.classList.remove('active'));sIdx=(sIdx+1)%slides.length;slides[sIdx].classList.add('active');},3500);
+let sIdx=0;setInterval(()=>{let slides=document.querySelectorAll('.slide');if(slides.length>0){slides.forEach(s=>s.classList.remove('active'));sIdx=(sIdx+1)%slides.length;slides[sIdx].classList.add('active');}},3500);
 
-function renderCats(){let cats=['All',...new Set(gadgets.map(g=>g.cat).filter(Boolean))];document.getElementById('cats').innerHTML=cats.map(c=>`<div class="cat ${c==currentCat?'active':''}" onclick="filterCat('${c}',this)">📦 ${c}</div>`).join('');}
+function renderCats(){let cats=['All',...new Set(gadgets.map(g=>g.cat).filter(Boolean))];document.getElementById('cats').innerHTML=cats.map(c=>`<div class="cat ${c==currentCat?'active':''}" onclick="filterCat('${escHtml(c)}',this)">📦 ${escHtml(c)}</div>`).join('');}
 function filterCat(c,el){currentCat=c;document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderProducts();}
 function renderProducts(){
   let q=document.getElementById('searchInput').value.toLowerCase();
   let list=gadgets.filter(g=>(currentCat=='All'||g.cat==currentCat)&&g.name.toLowerCase().includes(q));
   document.getElementById('products').innerHTML=list.map((g,i)=>{
     let off=Math.round((1-g.price/(g.oldPrice||9750))*100);
-    return `<div class="card" onclick="openPModal(${gadgets.indexOf(g)})"><div class="card-img"><img src="${g.img||g.imgs?.[0]||''}"><div class="badge">-${off}%</div><div class="free">✓ Free Delivery</div></div><div class="card-body"><h3>${g.name}</h3><div class="price">Rs.${g.price}<span class="old">Rs.${g.oldPrice||9750}</span></div><div class="rating"><span>⭐ ${g.rating||'4.8'} (${g.reviews||'234'})</span><span>${g.sold||'1k'} sold</span></div></div></div>`;
-  }).join('')||'<p style="grid-column:1/-1;padding:30px;text-align:center;color:#999">No Products</p>';
+    return `<div class="card" onclick="openPModal(${gadgets.indexOf(g)})"><div class="card-img"><img src="${g.img||g.imgs?.[0]||''}" loading="lazy"><div class="badge">-${off}%</div><div class="free">✓ Free Delivery</div></div><div class="card-body"><h3>${escHtml(g.name)}</h3><div class="price">Rs.${escHtml(g.price.toString())}<span class="old">Rs.${escHtml((g.oldPrice||9750).toString())}</span></div><div class="rating"><span>⭐ ${escHtml(g.rating||'4.8')} (${escHtml(g.reviews||'234')})</span><span>${escHtml(g.sold||'1k')} sold</span></div></div></div>`;
+  }).join('')||'<p style="grid-column:1/-1;padding:30px;text-align:center;color:#999">No Products - Admin se add karo</p>';
   renderAdminList();
 }
 function openPModal(idx){currentP=gadgets[idx];document.getElementById('pmImg').src=currentP.img||currentP.imgs?.[0];document.getElementById('pmName').innerText=currentP.name;document.getElementById('pmPrice').innerText='Rs.'+currentP.price;document.getElementById('pmOld').innerText='Rs.'+(currentP.oldPrice||9750);let off=Math.round((1-currentP.price/(currentP.oldPrice||9750))*100);document.getElementById('pmOff').innerText='-'+off+'%';document.getElementById('pmRating').innerText=`⭐ ${currentP.rating||'4.8'} (${currentP.reviews||'234'}) • ${currentP.sold||'1250'} Sold`;document.getElementById('pModal').style.display='block';document.getElementById('pmCartBtn').onclick=()=>{addToCart(idx);closePModal();};}
@@ -123,53 +114,73 @@ function closePModal(){document.getElementById('pModal').style.display='none';}
 function buyNow(){if(!currentP)return;cart=[{...currentP,qty:1}];localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();closePModal();}
 function addToCart(idx){let g=gadgets[idx];let ex=cart.find(c=>c.name==g.name);if(ex){ex.qty=(ex.qty||1)+1;}else{cart.push({...g,qty:1});}localStorage.setItem('gz_cart',JSON.stringify(cart));updateCounts();openCart();}
 function updateCounts(){document.getElementById('cartCount').innerText=cart.reduce((s,c)=>s+(c.qty||1),0);document.getElementById('cartCount2').innerText=cart.reduce((s,c)=>s+(c.qty||1),0);}
-function openCart(){document.getElementById('cartDrawer').style.right='0';document.getElementById('cartItems').innerHTML=cart.map((c,i)=>`<div style="display:flex;gap:8px;padding:10px 0;border-bottom:1px solid #eee"><img src="${c.img||c.imgs?.[0]}" style="width:50px;height:50px;border-radius:8px"><div style="flex:1"><div style="font-size:12px;font-weight:600">${c.name}</div><div style="font-size:12px;color:#f85606">Rs.${c.price} x ${c.qty||1}</div><div style="display:flex;gap:6px;margin-top:4px"><button onclick="changeQty(${i},-1)" style="width:24px;height:24px">-</button><span>${c.qty||1}</span><button onclick="changeQty(${i},1)" style="width:24px;height:24px">+</button><span onclick="removeCart(${i})" style="margin-left:10px;color:red;font-size:11px;cursor:pointer">Remove</span></div></div></div>`).join('')||'Cart empty';let total=cart.reduce((s,c)=>s+(parseInt(c.price||0)*(c.qty||1)),0);document.getElementById('cartTotal').innerText='Total: Rs.'+total+' (Free Delivery)';}
+function openCart(){document.getElementById('cartDrawer').style.right='0';document.getElementById('cartItems').innerHTML=cart.map((c,i)=>`<div style="display:flex;gap:8px;padding:10px 0;border-bottom:1px solid #eee"><img src="${c.img||c.imgs?.[0]}" style="width:50px;height:50px;border-radius:8px"><div style="flex:1"><div style="font-size:12px;font-weight:600">${escHtml(c.name)}</div><div style="font-size:12px;color:#f85606">Rs.${c.price} x ${c.qty||1}</div><div style="display:flex;gap:6px;margin-top:4px"><button onclick="changeQty(${i},-1)" style="width:24px;height:24px">-</button><span>${c.qty||1}</span><button onclick="changeQty(${i},1)" style="width:24px;height:24px">+</button><span onclick="removeCart(${i})" style="margin-left:10px;color:red;font-size:11px;cursor:pointer">Remove</span></div></div></div>`).join('')||'Cart empty';let total=cart.reduce((s,c)=>s+(parseInt(c.price||0)*(c.qty||1)),0);document.getElementById('cartTotal').innerText='Total: Rs.'+total+' (Free Delivery)';}
 function changeQty(i,d){cart[i].qty=(cart[i].qty||1)+d;if(cart[i].qty<=0)cart.splice(i,1);localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();updateCounts();}
 function removeCart(i){cart.splice(i,1);localStorage.setItem('gz_cart',JSON.stringify(cart));openCart();updateCounts();}
 function closeCart(){document.getElementById('cartDrawer').style.right='-100%';}
 
-// CHECKOUT - Customer ka number + Admin par order + Customer ka WhatsApp open link
 function checkout(){
+  if(!canCheckout()){alert('⚠️ 30 second ruko, phir order karo!');return;}
   let adminWA=localStorage.getItem('ownerWA')||ADMIN_WA;
-  let name=document.getElementById('custName').value.trim();
-  let phone=document.getElementById('custPhone').value.trim();
-  let addr=document.getElementById('custAddr').value.trim();
+  let name=sanitize(document.getElementById('custName').value);
+  let phone=sanitize(document.getElementById('custPhone').value);
+  let addr=sanitize(document.getElementById('custAddr').value);
   if(!name||!phone||!addr){alert('⚠️ Naam, WhatsApp Number, Address likhna zaruri hai!');return;}
+  if(name.length<3){alert('⚠️ Sahi Naam likho');return;}
+  if(!validPhone(phone)){alert('⚠️ Sahi WhatsApp Number likho 03xxxxxxxxx');return;}
+  if(addr.length<10){alert('⚠️ Pura Address likho - Area, City lazmi');return;}
   if(cart.length==0){alert('Cart empty');return;}
   let total=cart.reduce((s,c)=>s+(parseInt(c.price||0)*(c.qty||1)),0);
-  let items=cart.map(c=>`• ${c.name} x${c.qty||1} = Rs.${c.price*(c.qty||1)}`).join('%0A');
-  // Customer ka number saaf karo 03 se 92 me
+  let items=cart.map(c=>`• ${sanitize(c.name)} x${c.qty||1} = Rs.${c.price*(c.qty||1)}`).join('%0A');
   let custPhoneClean=phone.replace(/[^0-9]/g,'');
   if(custPhoneClean.startsWith('03')){custPhoneClean='92'+custPhoneClean.substring(1);}
   if(custPhoneClean.startsWith('3')){custPhoneClean='92'+custPhoneClean;}
-  
-  let msg=`*🔥 NEW ORDER - GadgetZone*%0A%0A*👤 Customer Info*%0AName: ${name}%0APhone: ${phone}%0AAddress: ${addr}%0A%0A*📦 Order Details*%0A${items}%0A%0A*💰 Total: Rs.${total}*%0A🚚 Delivery: FREE%0A💵 Payment: Cash on Delivery%0A%0A*👇 Customer ka WhatsApp Open Karo*%0Ahttps://wa.me/${custPhoneClean}`;
-  
-  // Admin ko order bhejo
+  let msg=`*🔥 NEW ORDER - GadgetZone*%0A%0A*👤 Customer*%0AName: ${name}%0APhone: ${phone}%0AAddress: ${addr}%0A%0A*📦 Order*%0A${items}%0A%0A*💰 Total: Rs.${total}*%0A🚚 FREE Delivery%0A💵 COD%0A%0A*👇 Customer Chat:*%0Ahttps://wa.me/${custPhoneClean}`;
+  localStorage.setItem('lastOrder',Date.now().toString());
   window.open(`https://wa.me/${adminWA}?text=${msg}`,'_blank');
   
-  // 2 second baad customer ko bhi option do
+  // BUG FIX 1: Cart auto clear after order
   setTimeout(()=>{
-    if(confirm('Order Admin ko bhej diya! Kya aap customer ka WhatsApp open karna chahte ho?')){
+    cart=[]; localStorage.setItem('gz_cart','[]'); updateCounts(); openCart();
+    document.getElementById('custName').value=''; document.getElementById('custPhone').value=''; document.getElementById('custAddr').value='';
+    if(confirm('✅ Order Admin 923256400449 ko bhej diya! Customer ka WhatsApp kholo?')){
       window.open(`https://wa.me/${custPhoneClean}`,'_blank');
     }
-  },1500);
+    closeCart();
+  },800);
 }
 
 document.getElementById('searchInput').addEventListener('input',renderProducts);
 document.getElementById('cartBtn').onclick=openCart;document.getElementById('bottomCart').onclick=openCart;
-document.getElementById('logoBtn').addEventListener('click',()=>{tapCount++;setTimeout(()=>tapCount=0,1000);if(tapCount>=2){let p=prompt('Admin Password:');if(p=='gadgets 0827'){document.getElementById('addBox').style.display='block';loadAdmin();}tapCount=0;}});
+
+document.getElementById('logoBtn').addEventListener('click',()=>{
+  tapCount++;setTimeout(()=>tapCount=0,1200);
+  if(tapCount>=2){
+    if(isLocked()){ alert('🔒 Admin 5 minute ke liye lock hai! 3 ghalat tries.'); tapCount=0; return; }
+    let p=prompt('Admin Password:');
+    if(!p){tapCount=0;return;}
+    if(p==='gadgets 0827'){
+        document.getElementById('addBox').style.display='block';loadAdmin();
+        localStorage.removeItem('adminAttempts');
+    }else{
+        alert('❌ Wrong Password');
+        let att=parseInt(localStorage.getItem('adminAttempts')||'0')+1;
+        localStorage.setItem('adminAttempts',att.toString());
+        if(att>=MAX_ATTEMPTS){ localStorage.setItem('adminLock',Date.now().toString()); alert('🔒 3 ghalat password - 5 min lock!'); }
+    }
+    tapCount=0;
+  }
+});
 
 let imgDatas=[];
 function compressImage(f){return new Promise(res=>{let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let max=1000;let w=img.width,h=img.height;if(w>h){if(w>max){h*=max/w;w=max;}}else{if(h>max){w*=max/h;h=max;}}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);res(c.toDataURL('image/jpeg',0.75));};img.src=e.target.result;};r.readAsDataURL(f);});}
 document.getElementById('pFile').addEventListener('change',async e=>{let files=[...e.target.files].slice(0,5);imgDatas=[];document.getElementById('pv').innerHTML='Loading...';for(let f of files){imgDatas.push(await compressImage(f));}document.getElementById('pv').innerHTML=imgDatas.map(d=>`<img src="${d}" style="width:50px;height:50px;object-fit:cover;border-radius:6px">`).join('');});
-
 function loadAdmin(){document.getElementById('ownerNumber').value=localStorage.getItem('ownerWA')||ADMIN_WA;document.getElementById('appLink').value=localStorage.getItem('gz_appLink')||DIRECT_APK;document.getElementById('bn1Title').value=localStorage.getItem('bn1Title')||'';document.getElementById('bn1Sub').value=localStorage.getItem('bn1Sub')||'';document.getElementById('bn2Title').value=localStorage.getItem('bn2Title')||'';document.getElementById('bn2Sub').value=localStorage.getItem('bn2Sub')||'';document.getElementById('bn3Title').value=localStorage.getItem('bn3Title')||'';document.getElementById('bn3Sub').value=localStorage.getItem('bn3Sub')||'';document.getElementById('flashH').value=localStorage.getItem('flashH')||2;document.getElementById('flashM').value=localStorage.getItem('flashM')||59;document.getElementById('flashS').value=localStorage.getItem('flashS')||59;}
-function saveSettings(){localStorage.setItem('ownerWA',document.getElementById('ownerNumber').value||ADMIN_WA);localStorage.setItem('gz_appLink',document.getElementById('appLink').value||DIRECT_APK);localStorage.setItem('bn1Title',document.getElementById('bn1Title').value);localStorage.setItem('bn1Sub',document.getElementById('bn1Sub').value);localStorage.setItem('bn2Title',document.getElementById('bn2Title').value);localStorage.setItem('bn2Sub',document.getElementById('bn2Sub').value);localStorage.setItem('bn3Title',document.getElementById('bn3Title').value);localStorage.setItem('bn3Sub',document.getElementById('bn3Sub').value);localStorage.setItem('flashH',document.getElementById('flashH').value||2);localStorage.setItem('flashM',document.getElementById('flashM').value||59);localStorage.setItem('flashS',document.getElementById('flashS').value||59);if(document.getElementById('bn1Title').value)document.getElementById('bn1TitleView').innerText=document.getElementById('bn1Title').value;if(document.getElementById('bn1Sub').value)document.getElementById('bn1SubView').innerText=document.getElementById('bn1Sub').value;startFlashTimer();alert('✅ Saved! Admin: '+ (document.getElementById('ownerNumber').value||ADMIN_WA));document.getElementById('addBox').style.display='none';}
-function saveProduct(){let n=document.getElementById('pName').value, pr=document.getElementById('pPrice').value, oldPr=document.getElementById('pOldPrice').value||'9750', cat=document.getElementById('pCat').value||'Gadgets', rating=document.getElementById('pRating').value||'4.8', rev=document.getElementById('pReviews').value||'234', sold=document.getElementById('pSold').value||'1250';if(!n||!pr||imgDatas.length==0){alert('Name Price Photo bharo');return;}gadgets.unshift({name:n,price:pr,oldPrice:oldPr,cat:cat,rating:rating,reviews:rev,sold:sold,img:imgDatas[0],imgs:imgDatas});localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();clearForm();alert('✅ LIVE!');}
+function saveSettings(){localStorage.setItem('gz_appLink',document.getElementById('appLink').value||DIRECT_APK);localStorage.setItem('bn1Title',sanitize(document.getElementById('bn1Title').value));localStorage.setItem('bn1Sub',sanitize(document.getElementById('bn1Sub').value));localStorage.setItem('bn2Title',sanitize(document.getElementById('bn2Title').value));localStorage.setItem('bn2Sub',sanitize(document.getElementById('bn2Sub').value));localStorage.setItem('bn3Title',sanitize(document.getElementById('bn3Title').value));localStorage.setItem('bn3Sub',sanitize(document.getElementById('bn3Sub').value));localStorage.setItem('flashH',document.getElementById('flashH').value||2);localStorage.setItem('flashM',document.getElementById('flashM').value||59);localStorage.setItem('flashS',document.getElementById('flashS').value||59);if(document.getElementById('bn1Title').value)document.getElementById('bn1TitleView').innerText=sanitize(document.getElementById('bn1Title').value);if(document.getElementById('bn1Sub').value)document.getElementById('bn1SubView').innerText=sanitize(document.getElementById('bn1Sub').value);startFlashTimer();alert('✅ Secured & Saved!');document.getElementById('addBox').style.display='none';}
+function saveProduct(){let n=sanitize(document.getElementById('pName').value), pr=document.getElementById('pPrice').value, oldPr=document.getElementById('pOldPrice').value||'9750', cat=sanitize(document.getElementById('pCat').value)||'Gadgets', rating=sanitize(document.getElementById('pRating').value)||'4.8', rev=sanitize(document.getElementById('pReviews').value)||'234', sold=sanitize(document.getElementById('pSold').value)||'1250';if(!n||!pr||imgDatas.length==0){alert('Name Price Photo bharo');return;}gadgets.unshift({name:n,price:pr,oldPrice:oldPr,cat:cat,rating:rating,reviews:rev,sold:sold,img:imgDatas[0],imgs:imgDatas});localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();clearForm();alert('✅ LIVE!');}
 function clearForm(){document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pOldPrice').value='';document.getElementById('pv').innerHTML='';imgDatas=[];}
-function renderAdminList(){document.getElementById('adminList').innerHTML=gadgets.map((g,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333;font-size:11px"><span>📦 ${g.name.substring(0,25)} Rs.${g.price} ⭐${g.rating}</span><span><b onclick="deleteProd(${i})" style="color:red;cursor:pointer">DELETE</b></span></div>`).join('')||'No products';}
+function renderAdminList(){document.getElementById('adminList').innerHTML=gadgets.map((g,i)=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333;font-size:11px"><span>📦 ${escHtml(g.name.substring(0,25))} Rs.${escHtml(g.price.toString())}</span><span><b onclick="deleteProd(${i})" style="color:red;cursor:pointer">DELETE</b></span></div>`).join('')||'No products';}
 function deleteProd(i){if(confirm('Delete?')){gadgets.splice(i,1);localStorage.setItem('myGadgets',JSON.stringify(gadgets));renderCats();renderProducts();}}
-function exportProducts(){let blob=new Blob([JSON.stringify(gadgets,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='products.json';a.click();}
-fetch('products.json').then(r=>r.json()).then(j=>{if(j.length>gadgets.length){gadgets=j;localStorage.setItem('myGadgets',JSON.stringify(j));}renderCats();renderProducts();updateCounts();startFlashTimer();}).catch(()=>{renderCats();renderProducts();updateCounts();startFlashTimer();});
+fetch('products.json').then(r=>r.json()).then(j=>{if(Array.isArray(j) && j.length>gadgets.length){gadgets=j;localStorage.setItem('myGadgets',JSON.stringify(j));}renderCats();renderProducts();updateCounts();startFlashTimer();}).catch(()=>{renderCats();renderProducts();updateCounts();startFlashTimer();});
+document.addEventListener('contextmenu', e => { if(document.getElementById('addBox').style.display==='block'){ e.preventDefault(); } });
 </script></body></html>
